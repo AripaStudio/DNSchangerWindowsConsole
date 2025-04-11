@@ -43,8 +43,7 @@ int main()
         string inputStart = strip(readln());
 		if(inputStart == "ViewDNS")
 		{
-            ListDNSpublic();
-            //break;
+            ListDNSpublic();            
 		}else if(inputStart == "ChangeDNS")
 		{
             writeln("First, please enter your Interface Name. To find it, you can use (Windows + R = control ncpa.cpl)");
@@ -54,8 +53,7 @@ int main()
 				SelectServer();
 				if(DNSselected != DNSServer.none)
 				{
-					ChangeDNS(interfaceName , setDnsCommand , addDnsCommand);    
-					//break;
+					ChangeDNS(interfaceName , setDnsCommand , addDnsCommand);    					
 				}
 			}else
 			{
@@ -67,8 +65,7 @@ int main()
             InputUser();
             if(!interfaceName.empty)
 			{
-                ResetDNSserver(interfaceName);
-                //break;
+                ResetDNSserver(interfaceName);                
 			}
 		}else if(inputStart == "exit")
 		{
@@ -88,31 +85,7 @@ void SelectServer()
 	while(true)
 	{
 		writeln("please Enter DNS : (shecan , google , cloudflare , quad9 , opendns)");
-		string inputUserDNSserver = strip(readln());
-		//if(inputUserDNSserver == "shecan")
-		//{
-		//    DNSselected = "shecan";
-		//    break;
-		//}else  if(inputUserDNSserver == "google")
-		//{
-		//    DNSselected = "google";
-		//    break;
-		//}else  if(inputUserDNSserver == "cloudflare")
-		//{
-		//    DNSselected = "cloudflare";
-		//    break;
-		//}else  if(inputUserDNSserver == "quad9")
-		//{
-		//    DNSselected = "quad9";
-		//    break;
-		//}else  if(inputUserDNSserver == "opendns")
-		//{
-		//    DNSselected = "opendns";
-		//    break;
-		//}else
-		//{
-		//    writeln("please Enter DNS : (shecan , google , cloudflare , quad9 , opendns) ");
-		//}
+		string inputUserDNSserver = strip(readln());		
 		switch(inputUserDNSserver)
 		{
 			case "shecan":
@@ -185,23 +158,7 @@ void InputUser()
 {
      writeln("Enter interfaceName (Windows + R = control ncpa.cpl )");
      interfaceName = strip(readln());  
-	 string[] selectedDNS = null;
-	 //if(DNSselected == "shecan")
-	 //{
-	 //   selectedDNS = DnsSHecan;
-	 //}else if(DNSselected == "google")
-	 //{
-	 //   selectedDNS = DnsGoogle;
-	 //}else if(DNSselected == "cloudflare")
-	 //{
-	 //   selectedDNS = DnsCloudflare;
-	 //}else if(DNSselected == "quad9")
-	 //{
-	 //   selectedDNS = DnsQuad9;
-	 //}else if(DNSselected == "opendns")
-	 //{
-	 //   selectedDNS = DnsOpenDNS;
-	 //}
+	 string[] selectedDNS = null;	 
 	 switch (DNSselected)
 	 {
 		 case DNSServer.shecan:
