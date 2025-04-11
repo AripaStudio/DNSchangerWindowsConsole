@@ -9,14 +9,30 @@ private auto interfaceName = "";
 private auto setDnsCommand = "";
 private auto addDnsCommand = "";
 
+enum DNSServer
+{
+	shecan, 
+	google,
+	cloudflare,
+	quad9,
+	opendns,
+	none
+}
+
+
 //Dns: 
 // google :
 private string[] DnsGoogle = ["8.8.8.8" , "8.8.4.4"];
+//cloudflare : 
 private string[] DnsCloudflare = [ "1.1.1.1" , "1.0.0.1" ];
+//Opendns : 
 private string[] DnsOpenDNS = [ "208.67.222.222" , "208.67.220.220" ];
+//Quad9 : 
 private string[] DnsQuad9 = [ "9.9.9.9" , "149.112.112.112" ];
+//Shecan :
 private string[] DnsSHecan = ["178.22.122.100" , "185.51.200.2"];
-private string DNSselected = "";
+
+private DNSServer DNSselected = DNSServer.none;
 
 int main()
 {   
@@ -28,7 +44,7 @@ int main()
 		if(inputStart == "ViewDNS")
 		{
             ListDNSpublic();
-            break;
+            //break;
 		}else if(inputStart == "ChangeDNS")
 		{
             writeln("First, please enter your Interface Name. To find it, you can use (Windows + R = control ncpa.cpl)");
@@ -36,11 +52,14 @@ int main()
             if(!interfaceName.empty)
 			{
 				SelectServer();
-				if(!DNSselected.empty)
+				if(DNSselected != DNSServer.none)
 				{
 					ChangeDNS(interfaceName , setDnsCommand , addDnsCommand);    
-					break;
+					//break;
 				}
+			}else
+			{
+				writeln("Error");				
 			}
 		}else if(inputStart == "deleteDNS")
 		{
@@ -49,7 +68,7 @@ int main()
             if(!interfaceName.empty)
 			{
                 ResetDNSserver(interfaceName);
-                break;
+                //break;
 			}
 		}else if(inputStart == "exit")
 		{
@@ -70,31 +89,55 @@ void SelectServer()
 	{
 		writeln("please Enter DNS : (shecan , google , cloudflare , quad9 , opendns)");
 		string inputUserDNSserver = strip(readln());
-		if(inputUserDNSserver == "shecan")
+		//if(inputUserDNSserver == "shecan")
+		//{
+		//    DNSselected = "shecan";
+		//    break;
+		//}else  if(inputUserDNSserver == "google")
+		//{
+		//    DNSselected = "google";
+		//    break;
+		//}else  if(inputUserDNSserver == "cloudflare")
+		//{
+		//    DNSselected = "cloudflare";
+		//    break;
+		//}else  if(inputUserDNSserver == "quad9")
+		//{
+		//    DNSselected = "quad9";
+		//    break;
+		//}else  if(inputUserDNSserver == "opendns")
+		//{
+		//    DNSselected = "opendns";
+		//    break;
+		//}else
+		//{
+		//    writeln("please Enter DNS : (shecan , google , cloudflare , quad9 , opendns) ");
+		//}
+		switch(inputUserDNSserver)
 		{
-			DNSselected = "shecan";
-			break;
-		}else  if(inputUserDNSserver == "google")
-		{
-			DNSselected = "google";
-			break;
-		}else  if(inputUserDNSserver == "cloudflare")
-		{
-			DNSselected = "cloudflare";
-			break;
-		}else  if(inputUserDNSserver == "quad9")
-		{
-			DNSselected = "quad9";
-			break;
-		}else  if(inputUserDNSserver == "opendns")
-		{
-			DNSselected = "opendns";
-			break;
-		}else
-		{
-			writeln("please Enter DNS : (shecan , google , cloudflare , quad9 , opendns) ");
-		}
+			case "shecan":
+				DNSselected = DNSServer.shecan;
+                break;
+            case "google":
+                DNSselected = DNSServer.google;
+                break;
+            case "cloudflare":
+                DNSselected = DNSServer.cloudflare;
+                break;
+            case "quad9":
+                DNSselected = DNSServer.quad9;
+                break;
+            case "opendns":
+                DNSselected = DNSServer.opendns;
+                break;
+            default:
+                writeln("please Enter DNS : (shecan , google , cloudflare , quad9 , opendns) ");
+                continue;
+        }
+        break;
+		
 	}
+	
 }
 
 void ListDNSpublic()
@@ -143,21 +186,42 @@ void InputUser()
      writeln("Enter interfaceName (Windows + R = control ncpa.cpl )");
      interfaceName = strip(readln());  
 	 string[] selectedDNS = null;
-	 if(DNSselected == "shecan")
+	 //if(DNSselected == "shecan")
+	 //{
+	 //   selectedDNS = DnsSHecan;
+	 //}else if(DNSselected == "google")
+	 //{
+	 //   selectedDNS = DnsGoogle;
+	 //}else if(DNSselected == "cloudflare")
+	 //{
+	 //   selectedDNS = DnsCloudflare;
+	 //}else if(DNSselected == "quad9")
+	 //{
+	 //   selectedDNS = DnsQuad9;
+	 //}else if(DNSselected == "opendns")
+	 //{
+	 //   selectedDNS = DnsOpenDNS;
+	 //}
+	 switch (DNSselected)
 	 {
-		selectedDNS = DnsSHecan;
-	 }else if(DNSselected == "google")
-	 {
-		selectedDNS = DnsGoogle;
-	 }else if(DNSselected == "cloudflare")
-	 {
-		selectedDNS = DnsCloudflare;
-	 }else if(DNSselected == "quad9")
-	 {
-		selectedDNS = DnsQuad9;
-	 }else if(DNSselected == "opendns")
-	 {
-		selectedDNS = DnsOpenDNS;
+		 case DNSServer.shecan:
+            selectedDNS = DnsSHecan;
+            break;
+		 case DNSServer.google:
+            selectedDNS = DnsGoogle;
+            break;
+		 case DNSServer.cloudflare:
+            selectedDNS = DnsCloudflare;
+            break;
+		 case DNSServer.quad9:
+            selectedDNS = DnsQuad9;
+            break;
+		 case DNSServer.opendns:
+            selectedDNS = DnsOpenDNS;
+            break;
+		 default:
+            writeln("Error: Invalid DNS server selected.");
+            return;
 	 }
      setDnsCommand = "netsh interface ip set dns name=" ~ interfaceName ~ " static " ~ selectedDNS[0] ;        
 	 addDnsCommand = "netsh interface ip add dns name=" ~ interfaceName ~ " " ~ selectedDNS[1] ~ " index=2";
