@@ -5,6 +5,10 @@ import std.process;
 import std.string;
 import std.format;
 
+//Aripa Studio 
+//V1.0.0
+
+
 private auto interfaceName = "";
 private auto setDnsCommand = "";
 private auto addDnsCommand = "";
