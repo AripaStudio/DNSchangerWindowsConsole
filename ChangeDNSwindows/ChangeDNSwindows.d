@@ -4,6 +4,13 @@ import std.stdio;
 import std.process;
 import std.string;
 import std.format;
+import std.conv : to;
+import std.array : join;
+import core.stdc.stdio;
+import core.sys.windows.windows;
+import core.sys.windows.winnt;
+import core.sys.windows.shlobj;
+import core.sys.windows.winbase;
 
 //Aripa Studio 
 //V1.0.0
@@ -40,8 +47,7 @@ private DNSServer DNSselected = DNSServer.none;
 
 int main()
 {   
-    Help();
-    
+    Help();    
     while(true)
 	{
         string inputStart = strip(readln()).toLower();
@@ -74,14 +80,109 @@ int main()
 		}else if(inputStart == "exit")
 		{
             break;
-		}else
+		}else if(inputStart == "showmydns")
 		{
-            writeln("Plase Enter (exit) , (ViewDNS) , (ChangeDNS) , (deleteDNS)");
+           ShowMyDNS();
+		}
+		else
+		{
+            writeln("Plase Enter (exit) , (ViewDNS) , (ChangeDNS) , (deleteDNS) , (showMydns)");
 		}
 	}
     readln();
     return 0;
 }
+
+
+
+
+
+
+
+
+
+//__________________________________________________________________________________________________________________________________
+
+//__________________________________________________________________________________________________________________________________
+
+//__________________________________________________________________________________________________________________________________
+
+
+
+
+
+struct TOKEN_ELEVATION
+{
+    DWORD TokenIsElevated; 
+}
+
+
+enum TOKEN_QUERY = 0x0008;
+
+bool isRunningAsAdmin()
+{
+    BOOL isAdmin = FALSE;
+    HANDLE token;
+
+    if (OpenProcessToken(GetCurrentProcess(), TOKEN_QUERY, &token))
+    {
+        TOKEN_ELEVATION elevation;
+        DWORD size;
+		if (GetTokenInformation(token, TokenElevation, &elevation, cast(DWORD)TOKEN_ELEVATION.sizeof, &size))
+        {
+            isAdmin = elevation.TokenIsElevated;
+        }
+        CloseHandle(token);
+    }
+    return isAdmin != 0;
+}
+
+
+string[] executeShellCommand(string command)
+{
+    auto pipes = pipeShell(command, Redirect.stdout | Redirect.stderr);
+    string output = pipes.stdout.byLine.join("\n");
+    string errorOutput = pipes.stderr.byLine.join("\n");
+    int exitCode = pipes.pid.wait();
+    return [to!string(exitCode), output, errorOutput];
+}
+
+void ShowMyDNS()
+{
+    auto result = executeShellCommand("powershell -Command \"Get-DnsClientServerAddress | Select-Object -ExpandProperty ServerAddresses\"");
+    int exitCode = to!int(result[0]);
+    string output = result[1];
+    string errorOutPut = result[2];
+    if (exitCode == 0 && !output.empty)
+    {
+        writeln("DNS Servers:");
+        writeln(output);
+    }
+    else
+    {
+        writeln("Error executing command:");
+        writeln(errorOutPut);
+    }
+}
+
+
+
+
+
+
+//__________________________________________________________________________________________________________________________________
+
+//__________________________________________________________________________________________________________________________________
+
+//__________________________________________________________________________________________________________________________________
+
+
+
+
+
+
+
+
 
 void SelectServer()
 {
@@ -141,6 +242,7 @@ void Help()
     writeln("For change DNS: ChangeDNS");
     writeln("To remove the DNS on your system, you can type this: deleteDNS");
     writeln("For exit , you can type this : exit");
+    writeln("for Your DNS , you can type this : showMydns");
     
 }
 
