@@ -14,7 +14,7 @@ import core.sys.windows.shlobj;
 import core.sys.windows.winbase;
 
 //Aripa Studio 
-//V1.0.0
+//V1.1.1
 
 
 private auto interfaceName = "";
@@ -50,6 +50,8 @@ private DNSServer DNSselected = DNSServer.none;
 
 //ANSI Colors
 enum tRESET = "\033[0m";
+
+enum tBRIGHT_BLUE = "\033[94m";
 
 enum tBLACK = "\033[30m";
 enum tRED = "\033[31m";
@@ -199,14 +201,14 @@ void AddListDns()
 void Help()
 {
     EnableANSI();
-	writeln("\033[36mWelcome to our program (Aripa Studio) - (DNS Changer)\033[0m");    
-    writeln("\033[32mProgram is running with administrative privileges.\033[0m");
-    writeln("\033[33mTo see the list of public DNS servers, type this, or if you want to enter your custom DNS, type this: (soon)\033[0m ");
-    writeln("\033[33mFor public DNS: ViewDNS\033[0m");
-    writeln("\033[33mFor change DNS: ChangeDNS\033[0m");
-    writeln("\033[33mTo remove the DNS on your system, you can type this: deleteDNS\033[0m");
-    writeln("\033[33mFor exit , you can type this : exit\033[0m");
-    writeln("\033[33mfor Your DNS , you can type this : showMydns\033[0m");
+	writeln( tCYAN , "Welcome to our program (Aripa Studio) - (DNS Changer)" , tRESET);    
+    writeln(tGREEN ,"Program is running with administrative privileges." , tRESET);
+    writeln(tYELLOW , "To see the list of public DNS servers, type this, or if you want to enter your custom DNS, type this: (soon)" , tRESET);
+    writeln(tYELLOW ,"For public DNS: ViewDNS" , tRESET);
+    writeln(tYELLOW ,"For change DNS: ChangeDNS" , tRESET);
+    writeln(tYELLOW ,"To remove the DNS on your system, you can type this: deleteDNS" , tRESET);
+    writeln(tYELLOW ,"For exit , you can type this : exit" , tRESET);
+    writeln(tYELLOW ,"for Your DNS , you can type this : showMydns" , tRESET);
     
 }
 
