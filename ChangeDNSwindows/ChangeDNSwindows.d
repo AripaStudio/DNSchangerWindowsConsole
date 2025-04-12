@@ -44,11 +44,11 @@ int main()
     
     while(true)
 	{
-        string inputStart = strip(readln());
-		if(inputStart == "ViewDNS")
+        string inputStart = strip(readln()).toLower();
+		if(inputStart == "viewdns")
 		{
             ListDNSpublic();            
-		}else if(inputStart == "ChangeDNS")
+		}else if(inputStart == "changedns")
 		{
             writeln("First, please enter your Interface Name. To find it, you can use (Windows + R = control ncpa.cpl)");
             InputUser();
@@ -63,7 +63,7 @@ int main()
 			{
 				writeln("Error");				
 			}
-		}else if(inputStart == "deleteDNS")
+		}else if(inputStart == "deletedns")
 		{
             writeln("First, please enter your Interface Name. To find it, you can use (Windows + R = control ncpa.cpl)");
             InputUser();
@@ -89,7 +89,7 @@ void SelectServer()
 	while(true)
 	{
 		writeln("please Enter DNS : (shecan , google , cloudflare , quad9 , opendns)");
-		string inputUserDNSserver = strip(readln());		
+		string inputUserDNSserver = strip(readln()).toLower();		
 		switch(inputUserDNSserver)
 		{
 			case "shecan":
