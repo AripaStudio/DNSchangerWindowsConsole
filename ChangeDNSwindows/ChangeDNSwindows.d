@@ -5,7 +5,8 @@ import std.process;
 import std.string;
 import std.format;
 import std.conv : to;
-import std.array : join;
+import std.array : join, array;
+import std.algorithm : map;
 import core.stdc.stdio;
 import core.sys.windows.windows;
 import core.sys.windows.winnt;
@@ -45,60 +46,6 @@ private string[] DnsSHecan = ["178.22.122.100" , "185.51.200.2"];
 
 private DNSServer DNSselected = DNSServer.none;
 
-int main()
-{   
-    Help();    
-    while(true)
-	{
-        string inputStart = strip(readln()).toLower();
-		if(inputStart == "viewdns")
-		{
-            ListDNSpublic();            
-		}else if(inputStart == "changedns")
-		{
-            writeln("First, please enter your Interface Name. To find it, you can use (Windows + R = control ncpa.cpl)");
-            InputUser();
-            if(!interfaceName.empty)
-			{
-				SelectServer();
-				if(DNSselected != DNSServer.none)
-				{
-					ChangeDNS(interfaceName , setDnsCommand , addDnsCommand);    					
-				}
-			}else
-			{
-				writeln("Error");				
-			}
-		}else if(inputStart == "deletedns")
-		{
-            writeln("First, please enter your Interface Name. To find it, you can use (Windows + R = control ncpa.cpl)");
-            InputUser();
-            if(!interfaceName.empty)
-			{
-                ResetDNSserver(interfaceName);                
-			}
-		}else if(inputStart == "exit")
-		{
-            break;
-		}else if(inputStart == "showmydns")
-		{
-           ShowMyDNS();
-		}
-		else
-		{
-            writeln("Plase Enter (exit) , (ViewDNS) , (ChangeDNS) , (deleteDNS) , (showMydns)");
-		}
-	}
-    readln();
-    return 0;
-}
-
-
-
-
-
-
-
 
 
 //__________________________________________________________________________________________________________________________________
@@ -106,16 +53,14 @@ int main()
 //__________________________________________________________________________________________________________________________________
 
 //__________________________________________________________________________________________________________________________________
-
 
 
 
 
 struct TOKEN_ELEVATION
 {
-    DWORD TokenIsElevated; 
+    uint TokenIsElevated; 
 }
-
 
 enum TOKEN_QUERY = 0x0008;
 
@@ -128,7 +73,7 @@ bool isRunningAsAdmin()
     {
         TOKEN_ELEVATION elevation;
         DWORD size;
-		if (GetTokenInformation(token, TokenElevation, &elevation, cast(DWORD)TOKEN_ELEVATION.sizeof, &size))
+        if (GetTokenInformation(token, TokenElevation, &elevation, cast(DWORD)TOKEN_ELEVATION.sizeof, &size))
         {
             isAdmin = elevation.TokenIsElevated;
         }
@@ -137,22 +82,27 @@ bool isRunningAsAdmin()
     return isAdmin != 0;
 }
 
-
 string[] executeShellCommand(string command)
 {
     auto pipes = pipeShell(command, Redirect.stdout | Redirect.stderr);
-    string output = pipes.stdout.byLine.join("\n");
-    string errorOutput = pipes.stderr.byLine.join("\n");
+    string output = pipes.stdout.byLine.map!(line => line.idup).join("\n");
+    string errorOutput = pipes.stderr.byLine.map!(line => line.idup).join("\n");
     int exitCode = pipes.pid.wait();
     return [to!string(exitCode), output, errorOutput];
 }
 
 void ShowMyDNS()
 {
+    if (!isRunningAsAdmin())
+    {
+        writeln("This operation requires administrative privileges.");
+        return;
+    }
+
     auto result = executeShellCommand("powershell -Command \"Get-DnsClientServerAddress | Select-Object -ExpandProperty ServerAddresses\"");
     int exitCode = to!int(result[0]);
     string output = result[1];
-    string errorOutPut = result[2];
+    string errorOutput = result[2];
     if (exitCode == 0 && !output.empty)
     {
         writeln("DNS Servers:");
@@ -161,7 +111,7 @@ void ShowMyDNS()
     else
     {
         writeln("Error executing command:");
-        writeln(errorOutPut);
+        writeln(errorOutput);
     }
 }
 
@@ -316,4 +266,54 @@ void ChangeDNS(string interFaceName , string setDnsCommand , string addDnsComman
         writeln("Error" , result);
 	}
 
+}
+
+
+
+int main()
+{   
+    Help();    
+    while(true)
+	{
+        string inputStart = strip(readln()).toLower();
+		if(inputStart == "viewdns")
+		{
+            ListDNSpublic();            
+		}else if(inputStart == "changedns")
+		{
+            writeln("First, please enter your Interface Name. To find it, you can use (Windows + R = control ncpa.cpl)");
+            InputUser();
+            if(!interfaceName.empty)
+			{
+				SelectServer();
+				if(DNSselected != DNSServer.none)
+				{
+					ChangeDNS(interfaceName , setDnsCommand , addDnsCommand);    					
+				}
+			}else
+			{
+				writeln("Error");				
+			}
+		}else if(inputStart == "deletedns")
+		{
+            writeln("First, please enter your Interface Name. To find it, you can use (Windows + R = control ncpa.cpl)");
+            InputUser();
+            if(!interfaceName.empty)
+			{
+                ResetDNSserver(interfaceName);                
+			}
+		}else if(inputStart == "exit")
+		{
+            break;
+		}else if(inputStart == "showmydns")
+		{
+			ShowMyDNS();
+		}
+		else
+		{
+            writeln("Plase Enter (exit) , (ViewDNS) , (ChangeDNS) , (deleteDNS) , (showMydns)");
+		}
+	}
+    readln();
+    return 0;
 }
