@@ -18,9 +18,8 @@ import core.sys.windows.winbase;
 
 
 private auto interfaceName = "";
-private auto setDnsCommand = "";
-private auto addDnsCommand = "";
-
+private auto dnsCommand = "";
+private  string[] selectedDNS = null;	
 enum DNSServer
 {
 	shecan, 
@@ -249,7 +248,7 @@ void InputUser()
 {
      writeln("Enter interfaceName (Windows + R = control ncpa.cpl )");
      interfaceName = strip(readln());  
-	 string[] selectedDNS = null;	 
+	 
 	 switch (DNSselected)
 	 {
 		 case DNSServer.shecan:
@@ -271,34 +270,35 @@ void InputUser()
             writeln("Error: Invalid DNS server selected.");
             return;
 	 }
-     setDnsCommand = "netsh interface ip set dns name=" ~ interfaceName ~ " static " ~ selectedDNS[0] ;        
-	 addDnsCommand = "netsh interface ip add dns name=" ~ interfaceName ~ " " ~ selectedDNS[1] ~ " index=2";
+	 //setDnsCommand = "netsh interface ip set dns name=" ~ interfaceName ~ " static " ~ selectedDNS[0] ;        
+	 //addDnsCommand = "netsh interface ip add dns name=" ~ interfaceName ~ " " ~ selectedDNS[1] ~ " index=2";
+
+      dnsCommand = format(
+								`powershell -Command "Set-DnsClientServerAddress -InterfaceAlias '%s' -ServerAddresses ('%s', '%s')"`
+                                ,interfaceName , selectedDNS[0] , selectedDNS[1]
+								);
+
     
 }
 
 
 
-void ChangeDNS(string interFaceName , string setDnsCommand , string addDnsCommand)
+void ChangeDNS(string interFaceName , string DNSCommand )
 {
-    auto result = executeShell(setDnsCommand);
-    int exitCodeSet = result[0];
-    if(exitCodeSet == 0)
-	{	
-        writeln("Ba mofaqaeat Set shod");
-        auto resultDnsTwo = executeShell(addDnsCommand);
-        int AddCodeSet = resultDnsTwo[0];      
-        if(AddCodeSet == 0)
-		{
-			
-			writeln("Ba mofaqaeat Set shod");			
-           
-		}else
-		{
-            writeln("Error " , resultDnsTwo);
-		}
+
+	auto result = executeShellCommand(DNSCommand);
+	int exitCode = to!int(result[0]);
+	string output = result[1];
+	string errorOutput = result[2];
+	if(exitCode == 0)
+	{
+		writeln("DNS servers set successfully for interface: ", interfaceName);
+        writeln("Primary DNS: ", selectedDNS[0]);
+        writeln("Secondary DNS: ", selectedDNS[1]);
 	}else
 	{
-        writeln("Error" , result);
+		writeln("Error setting DNS servers:");
+        writeln(errorOutput);
 	}
 
 }
@@ -332,7 +332,7 @@ int main()
 					SelectServer();
 					if(DNSselected != DNSServer.none)
 					{
-						ChangeDNS(interfaceName , setDnsCommand , addDnsCommand);    					
+						ChangeDNS(interfaceName , dnsCommand);    					
 					}
 				}else
 				{
