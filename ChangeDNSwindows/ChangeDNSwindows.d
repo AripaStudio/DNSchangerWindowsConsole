@@ -48,6 +48,19 @@ private DNSServer DNSselected = DNSServer.none;
 
 
 
+//ANSI Colors
+enum tRESET = "\033[0m";
+
+enum tBLACK = "\033[30m";
+enum tRED = "\033[31m";
+enum tGREEN = "\033[32m";
+enum tYELLOW = "\033[33m";
+enum tBLUE = "\033[34m";
+enum tMAGENTA = "\033[35m";
+enum tCYAN = "\033[36m";
+enum tWHITE = "\033[37m";
+
+
 //__________________________________________________________________________________________________________________________________
 
 //__________________________________________________________________________________________________________________________________
@@ -185,15 +198,35 @@ void AddListDns()
 
 void Help()
 {
-	writeln("Welcome to our program (Aripa Studio) - (DNS Changer)");    
-    writeln("please Run Admin ");
-    writeln("To see the list of public DNS servers, type this, or if you want to enter your custom DNS, type this: (soon) ");
-    writeln("For public DNS: ViewDNS");
-    writeln("For change DNS: ChangeDNS");
-    writeln("To remove the DNS on your system, you can type this: deleteDNS");
-    writeln("For exit , you can type this : exit");
-    writeln("for Your DNS , you can type this : showMydns");
+    EnableANSI();
+	writeln("\033[36mWelcome to our program (Aripa Studio) - (DNS Changer)\033[0m");    
+    writeln("\033[32mProgram is running with administrative privileges.\033[0m");
+    writeln("\033[33mTo see the list of public DNS servers, type this, or if you want to enter your custom DNS, type this: (soon)\033[0m ");
+    writeln("\033[33mFor public DNS: ViewDNS\033[0m");
+    writeln("\033[33mFor change DNS: ChangeDNS\033[0m");
+    writeln("\033[33mTo remove the DNS on your system, you can type this: deleteDNS\033[0m");
+    writeln("\033[33mFor exit , you can type this : exit\033[0m");
+    writeln("\033[33mfor Your DNS , you can type this : showMydns\033[0m");
     
+}
+
+
+void EnableANSI()
+{
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    if(hConsole == INVALID_HANDLE_VALUE)
+	{
+        return;
+	}
+    DWORD mode = 0;
+    if(!GetConsoleMode(hConsole , &mode))
+	{
+        return;
+	}
+
+    mode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
+    SetConsoleMode(hConsole , mode);
+
 }
 
 
@@ -274,8 +307,9 @@ int main()
 {   
     if (!isRunningAsAdmin())
     {
-        writeln("Error: This program must be run with administrative privileges.");
-        writeln("Please run the program as an administrator and try again.");
+        EnableANSI();
+        writeln("\033[31mError: This program must be run with administrative privileges.\033[0m");
+        writeln("\033[31mPlease run the program as an administrator and try again.\033[0m");
         readln();
         return 1; 
     }else
