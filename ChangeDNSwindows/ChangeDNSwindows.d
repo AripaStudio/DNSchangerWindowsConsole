@@ -14,7 +14,7 @@ import core.sys.windows.shlobj;
 import core.sys.windows.winbase;
 
 //Aripa Studio 
-//V1.1.1
+//V1.1.2
 
 
 private auto interfaceName = "";
@@ -234,13 +234,19 @@ void EnableANSI()
 
 void ResetDNSserver(string interfaceNameInput)
 {
-    
-    auto CommandReset = "netsh interface ip set dns name=\"" ~ interfaceNameInput ~ "\" source=dhcp";
-    auto result = executeShell(CommandReset);
-    int ResultCmd = result[0];
-    if(ResultCmd == 0)
+    auto commandReset = `powershell -Command "Set-DnsClientServerAddress -InterfaceAlias \\"` ~ interfaceNameInput ~ `\\" -ResetServerAddresses"`;    
+    auto result = executeShellCommand(commandReset);
+    int exitcode = to!int(result[0]);
+    string output = result[1];
+    string errorOutput = result[2];
+
+    if(exitcode == 0)
 	{
         writeln("Ba mofaqeat Anjam shod ");
+        writeln("out put : " , output);
+	}else
+	{
+        writeln("Error " , errorOutput);
 	}
 }
 
@@ -292,7 +298,7 @@ void ChangeDNS(string interFaceName , string DNSCommand )
 	string errorOutput = result[2];
 	if(exitCode == 0)
 	{
-		writeln("DNS servers set successfully for interface: ", interfaceName);
+		writeln("DNS servers set successfully for interface: ", interFaceName);
         writeln("Primary DNS: ", selectedDNS[0]);
         writeln("Secondary DNS: ", selectedDNS[1]);
 	}else
@@ -307,9 +313,10 @@ void ChangeDNS(string interFaceName , string DNSCommand )
 
 int main()
 {   
+     EnableANSI();
     if (!isRunningAsAdmin())
     {
-        EnableANSI();
+       
         writeln("\033[31mError: This program must be run with administrative privileges.\033[0m");
         writeln("\033[31mPlease run the program as an administrator and try again.\033[0m");
         readln();
@@ -333,6 +340,8 @@ int main()
 					if(DNSselected != DNSServer.none)
 					{
 						ChangeDNS(interfaceName , dnsCommand);    					
+                        writeln(tYELLOW, "Press Enter to continue...", tRESET);
+                        readln();
 					}
 				}else
 				{
@@ -345,6 +354,8 @@ int main()
 				if(!interfaceName.empty)
 				{
 					ResetDNSserver(interfaceName);                
+                    writeln(tYELLOW, "Press Enter to continue...", tRESET);
+                    readln();
 				}
 			}else if(inputStart == "exit")
 			{
@@ -352,6 +363,8 @@ int main()
 			}else if(inputStart == "showmydns")
 			{
 				ShowMyDNS();
+                writeln(tYELLOW, "Press Enter to continue...", tRESET);
+                readln();
 			}
 			else
 			{
