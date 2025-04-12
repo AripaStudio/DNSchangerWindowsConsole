@@ -73,7 +73,7 @@ bool isRunningAsAdmin()
     {
         TOKEN_ELEVATION elevation;
         DWORD size;
-        if (GetTokenInformation(token, TokenElevation, &elevation, cast(DWORD)TOKEN_ELEVATION.sizeof, &size))
+        if (GetTokenInformation(token, TOKEN_INFORMATION_CLASS.TokenElevation, &elevation, cast(DWORD)TOKEN_ELEVATION.sizeof, &size))
         {
             isAdmin = elevation.TokenIsElevated;
         }
@@ -272,48 +272,58 @@ void ChangeDNS(string interFaceName , string setDnsCommand , string addDnsComman
 
 int main()
 {   
-    Help();    
-    while(true)
+    if (!isRunningAsAdmin())
+    {
+        writeln("Error: This program must be run with administrative privileges.");
+        writeln("Please run the program as an administrator and try again.");
+        readln();
+        return 1; 
+    }else
 	{
-        string inputStart = strip(readln()).toLower();
-		if(inputStart == "viewdns")
+		Help();    
+		while(true)
 		{
-            ListDNSpublic();            
-		}else if(inputStart == "changedns")
-		{
-            writeln("First, please enter your Interface Name. To find it, you can use (Windows + R = control ncpa.cpl)");
-            InputUser();
-            if(!interfaceName.empty)
+			string inputStart = strip(readln()).toLower();
+			if(inputStart == "viewdns")
 			{
-				SelectServer();
-				if(DNSselected != DNSServer.none)
+				ListDNSpublic();            
+			}else if(inputStart == "changedns")
+			{
+				writeln("First, please enter your Interface Name. To find it, you can use (Windows + R = control ncpa.cpl)");
+				InputUser();
+				if(!interfaceName.empty)
 				{
-					ChangeDNS(interfaceName , setDnsCommand , addDnsCommand);    					
+					SelectServer();
+					if(DNSselected != DNSServer.none)
+					{
+						ChangeDNS(interfaceName , setDnsCommand , addDnsCommand);    					
+					}
+				}else
+				{
+					writeln("Error");				
 				}
-			}else
+			}else if(inputStart == "deletedns")
 			{
-				writeln("Error");				
-			}
-		}else if(inputStart == "deletedns")
-		{
-            writeln("First, please enter your Interface Name. To find it, you can use (Windows + R = control ncpa.cpl)");
-            InputUser();
-            if(!interfaceName.empty)
+				writeln("First, please enter your Interface Name. To find it, you can use (Windows + R = control ncpa.cpl)");
+				InputUser();
+				if(!interfaceName.empty)
+				{
+					ResetDNSserver(interfaceName);                
+				}
+			}else if(inputStart == "exit")
 			{
-                ResetDNSserver(interfaceName);                
+				break;
+			}else if(inputStart == "showmydns")
+			{
+				ShowMyDNS();
 			}
-		}else if(inputStart == "exit")
-		{
-            break;
-		}else if(inputStart == "showmydns")
-		{
-			ShowMyDNS();
+			else
+			{
+				writeln("Plase Enter (exit) , (ViewDNS) , (ChangeDNS) , (deleteDNS) , (showMydns)");
+			}
 		}
-		else
-		{
-            writeln("Plase Enter (exit) , (ViewDNS) , (ChangeDNS) , (deleteDNS) , (showMydns)");
-		}
+		readln();
+		return 0;
 	}
-    readln();
-    return 0;
+   
 }
