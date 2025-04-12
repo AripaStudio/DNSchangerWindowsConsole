@@ -506,5 +506,8 @@
  </Config>
  <Folder name="ChangeDNSwindows">
   <File path="ChangeDNSwindows.d" />
+  <File path="ConsoleUI.d" />
+  <File path="DNSManager.d" />
+  <File path="NetworkInterface.d" />
  </Folder>
 </DProject>
