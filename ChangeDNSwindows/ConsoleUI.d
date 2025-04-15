@@ -69,11 +69,15 @@ public class ConsoleUIClass
         //---------------
 
 		writeln(GLVclass.tYELLOW, "To display a specific DNS in your added list, you can type: " , GLVclass.tRESET ,
-				GLVclass.tBRIGHT_BLUE ,  "showDnsInfo" , GLVclass.tRESET);
+				GLVclass.tBRIGHT_BLUE ,  "showDnsInfoC" , GLVclass.tRESET);
         //---------------
 
 		writeln(GLVclass.tYELLOW, "To add a DNS server to your list, you can type: " , GLVclass.tRESET ,
-				GLVclass.tBRIGHT_BLUE , "adddns ", GLVclass.tRESET);
+				GLVclass.tBRIGHT_BLUE , "addDNSC", GLVclass.tRESET);
+        //---------------
+        writeln(GLVclass.tYELLOW, "To set a DNS from your added DNS list, you can type: ", GLVclass.tRESET,
+				GLVclass.tBRIGHT_BLUE , "changeDNSC ", GLVclass.tRESET);
+
 
         //---------------
 
