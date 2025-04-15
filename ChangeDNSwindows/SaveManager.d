@@ -30,17 +30,20 @@ public class JsonDataFileManager
 	static JsonDataFileManager fromJson(JSONValue json)
 	{
 		auto result = new JsonDataFileManager();
-		result.NameDNS = json["NameDNS"].str;
-		result.OneDNS = json["OneDNS"].str;
-		result.TwoDNS = json["TwoDNS"].str;
+		if("NameDNS" in json && "OneDNS" in json && "TwoDNS" in json ) 
+		{
+			result.NameDNS = json["NameDNS"].str;
+			result.OneDNS = json["OneDNS"].str;
+			result.TwoDNS = json["TwoDNS"].str;
+		}
 		return result;
 	}
 }
-
+/// Manages DNS data storage and retrieval in JSON format.
 public class SaveManagerClass
 {
 
-	private string fileName = "SaveDNSjsonDNCaripa.json";
+	private string fileName = "dns_data_json.json";
 	private JsonDataFileManager[] ManagerData;
 
 	this()
@@ -48,20 +51,31 @@ public class SaveManagerClass
 		loadData();
 	}
 
+
+
 	private void loadData()
 	{
 
 		if(exists(fileName))
 		{
-			string JsonString = readText(fileName);
-			JSONValue json = parseJSON(JsonString);
-			ManagerData = json.array.map!(j => JsonDataFileManager.fromJson(j)).array;
+			try
+			{
+				string JsonString = readText(fileName);
+				JSONValue json = parseJSON(JsonString);
+				ManagerData = json.array.map!(j => JsonDataFileManager.fromJson(j)).array;
+			}catch(JSONException e)
+			{
+				writeln( GLVclass.tRED ,"Error parsing JSON file: ", e.msg , GLVclass.tRESET);
+			}
 		}else
 		{
 			ManagerData = [];
 		}
 
 	}
+
+
+
 
 	private void saveData()
 	{
@@ -71,14 +85,27 @@ public class SaveManagerClass
 
 	void AddData(string Namedns , string onedns, string twodns)
 	{
-		auto Data = new JsonDataFileManager();
-		Data.NameDNS = Namedns;
-		Data.OneDNS = onedns;
-		Data.TwoDNS = twodns;
-		ManagerData ~= Data;
-		saveData();
-		writeln("Data added successfully");
-		writeln("Name DNS : " , Namedns , " DNS : " , onedns , " " , twodns);
+		if(Namedns.empty || onedns.empty || twodns.empty )
+		{
+			writeln("Error: DNS fields cannot be empty!");
+			return;
+		}
+
+		if(ManagerData.any!(data => data.NameDNS == Namedns))
+		{
+			writeln("Error: DNS with this name already exists!");
+			return;
+		}
+
+			auto Data = new JsonDataFileManager();
+			Data.NameDNS = Namedns;
+			Data.OneDNS = onedns;
+			Data.TwoDNS = twodns;
+			ManagerData ~= Data;
+			saveData();
+			writeln("Data added successfully");
+			writeln("Name DNS : " , Namedns , " DNS : " , onedns , " " , twodns);
+		
 	}
 
 	void  DeleteDNSdata(string nameDNS)
