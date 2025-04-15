@@ -37,6 +37,8 @@ public class ConsoleUIClass
     {
         writeln(GLVclass.tCYAN, "Welcome to our program (Aripa Studio) - (DNCaripa)", GLVclass.tRESET);    
         //---------------
+         writeln(GLVclass.tCYAN, "(DNCaripa = (DN = DNS , C = Changer , aripa = Aripa Studio ))", GLVclass.tRESET);    
+        //---------------
 
         writeln(GLVclass.tCYAN, "V1.2.0 (Aripa Studio) - (DNS Changer)", GLVclass.tRESET);  
         //---------------
