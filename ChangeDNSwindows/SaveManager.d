@@ -6,6 +6,8 @@ import std.json;
 import std.conv;
 import std.string;
 import std.algorithm;
+import std.range;
+import GLV;
 import std.array;
 
 public class JsonDataFileManager
@@ -67,23 +69,57 @@ public class SaveManagerClass
 		std.file.write(fileName , json.toPrettyString());
 	}
 
-	void AddData(string NameDNS , string OneDNS , string TwoDNS)
+	void AddData(string Namedns , string onedns, string twodns)
 	{
-
+		auto Data = new JsonDataFileManager();
+		Data.NameDNS = Namedns;
+		Data.OneDNS = onedns;
+		Data.TwoDNS = twodns;
+		ManagerData ~= Data;
+		saveData();
+		writeln("Data added successfully");
+		writeln("Name DNS : " , Namedns , " DNS : " , onedns , " " , twodns);
 	}
 
-	void  DeleteDNSdata(string NameDNS)
+	void  DeleteDNSdata(string nameDNS)
 	{
-
+		ManagerData = ManagerData.filter!(c => c.NameDNS != nameDNS).array;
+		saveData();
+		writeln( nameDNS , " deleted successfully!");
 	}
 
 	void showAllDNS()
 	{
+		if(ManagerData.empty)
+		{
+			writeln("No Data found!");
+            return;
+		}
 
+		foreach(Data; ManagerData)
+		{
+			writeln("Name DNS :  ", Data.NameDNS);
+            writeln("One DNS : ", Data.OneDNS);
+            writeln("Two DNS : ", Data.TwoDNS);
+            writeln(GLVclass.tBLUE , "-----------" , GLVclass.tRESET);
+		}
 	}
 
-	void ShowDNS(string NameDNS)
+	void ShowDNS(string namedns)
 	{
+		auto result = ManagerData.find!(data => data.NameDNS == namedns);
+
+		if(result.empty)
+		{
+			writeln("No DNS found with NameDNS: ", namedns);
+			return;
+		}
+
+		auto data = result[0];
+		writeln("Name DNS : ", data.NameDNS);
+		writeln("One DNS  : ", data.OneDNS);
+		writeln("Two DNS  : ", data.TwoDNS);
+		writeln(GLVclass.tGREEN, "-----------", GLVclass.tRESET);
 
 	}
 
