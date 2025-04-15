@@ -509,5 +509,6 @@
   <File path="ConsoleUI.d" />
   <File path="DNSManager.d" />
   <File path="NetworkInterface.d" />
+  <File path="SaveManager.d" />
  </Folder>
 </DProject>

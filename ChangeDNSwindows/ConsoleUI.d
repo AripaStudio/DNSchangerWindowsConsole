@@ -44,7 +44,7 @@ public class ConsoleUIClass
     // Display help message
     void showHelp()
     {
-        writeln(tCYAN, "Welcome to our program (Aripa Studio) - (DNS Changer)", tRESET);    
+        writeln(tCYAN, "Welcome to our program (Aripa Studio) - (DNCaripa)", tRESET);    
         writeln(tCYAN, "V1.2.0 (Aripa Studio) - (DNS Changer)", tRESET);  
         writeln(tGREEN, "Program is running with administrative privileges.", tRESET);
         writeln(tYELLOW, "To see the list of public DNS servers, type this, or if you want to enter your custom DNS, type this: (soon)", tRESET);
@@ -62,7 +62,8 @@ public class ConsoleUIClass
         writeln(tCYAN, "CloudFlare DNS: ", tRESET, ["1.1.1.1", "1.0.0.1"]);
         writeln(tCYAN, "OpenDns DNS: ", tRESET, ["208.67.222.222", "208.67.220.220"]);
         writeln(tCYAN, "Quad9 DNS: ", tRESET, ["9.9.9.9", "149.112.112.112"]);
-        writeln(tCYAN, "Shecan DNS: ", tRESET, ["178.22.122.100", "185.51.200.2"], tCYAN, " Website: ", tRESET, "https://shecan.ir/");
+        writeln(tCYAN, "Shecan DNS: ", tRESET, ["178.22.122.100", "185.51.200.2"], tCYAN, " Website: ", tRESET, "https://shecan.ir/" );
+        writeln(tMAGENTA , "A DNS breaker is a tool or service that bypasses DNS restrictions to access blocked websites, commonly used by Iranians; I'm unsure about its security." , tRESET);
     }
 
 	string getUserInput(string prompt)
