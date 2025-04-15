@@ -4,20 +4,11 @@ module ConsoleUI;
 import std.stdio;
 import std.string;
 import core.sys.windows.windows;
+import GLV;
 
 public class ConsoleUIClass
 {
-	// ANSI Colors
-    private enum tRESET = "\033[0m";
-    private enum tBRIGHT_BLUE = "\033[94m";
-    private enum tBLACK = "\033[30m";
-    private enum tRED = "\033[31m";
-    private enum tGREEN = "\033[32m";
-    private enum tYELLOW = "\033[33m";
-    private enum tBLUE = "\033[34m";
-    private enum tMAGENTA = "\033[35m";
-    private enum tCYAN = "\033[36m";
-    private enum tWHITE = "\033[37m";
+
 
 	this()
     {
@@ -44,44 +35,79 @@ public class ConsoleUIClass
     // Display help message
     void showHelp()
     {
-        writeln(tCYAN, "Welcome to our program (Aripa Studio) - (DNCaripa)", tRESET);    
-        writeln(tCYAN, "V1.2.0 (Aripa Studio) - (DNS Changer)", tRESET);  
-        writeln(tGREEN, "Program is running with administrative privileges.", tRESET);
-        writeln(tYELLOW, "To see the list of public DNS servers, type this, or if you want to enter your custom DNS, type this: (soon)", tRESET);
-        writeln(tYELLOW, "For public DNS: ViewDNS", tRESET);
-        writeln(tYELLOW, "For change DNS: ChangeDNS", tRESET);
-        writeln(tYELLOW, "To remove the DNS on your system, you can type this: deleteDNS", tRESET);
-        writeln(tYELLOW, "For exit, you can type this: exit", tRESET);
-        writeln(tYELLOW, "For your DNS, you can type this: showMydns", tRESET);
+        writeln(GLVclass.tCYAN, "Welcome to our program (Aripa Studio) - (DNCaripa)", GLVclass.tRESET);    
+        //---------------
+
+        writeln(GLVclass.tCYAN, "V1.2.0 (Aripa Studio) - (DNS Changer)", GLVclass.tRESET);  
+        //---------------
+
+        writeln(GLVclass.tGREEN, "Program is running with administrative privileges.", GLVclass.tRESET);  
+        //---------------
+
+        writeln(GLVclass.tYELLOW, "For public DNS: ", GLVclass.tRESET , 
+				GLVclass.tBRIGHT_BLUE , "ViewDNS ", GLVclass.tRESET);
+        //---------------
+
+        writeln(GLVclass.tYELLOW, "For change DNS: ", GLVclass.tRESET , 
+				GLVclass.tBRIGHT_BLUE , "ChangeDNS ", GLVclass.tRESET);
+        //---------------
+
+        writeln(GLVclass.tYELLOW, "To remove the DNS on your system, you can type this: ", GLVclass.tRESET,
+				GLVclass.tBRIGHT_BLUE , "deleteDNS ", GLVclass.tRESET);
+        
+        //---------------
+
+        writeln(GLVclass.tYELLOW, "For your DNS, you can type this: ", GLVclass.tRESET , 
+				GLVclass.tBRIGHT_BLUE , "showMydns ", GLVclass.tRESET);
+        //---------------
+
+        writeln(GLVclass.tBLUE , "------------Custom DNS section ------------ " , GLVclass.tRESET);
+        //---------------
+
+		writeln(GLVclass.tYELLOW, "To display the list of all added DNS servers, you can type: " , GLVclass.tRESET ,
+				GLVclass.tBRIGHT_BLUE ,  "showALLc", GLVclass.tRESET);
+        //---------------
+
+		writeln(GLVclass.tYELLOW, "To display a specific DNS in your added list, you can type: " , GLVclass.tRESET ,
+				GLVclass.tBRIGHT_BLUE ,  "showDnsInfo" , GLVclass.tRESET);
+        //---------------
+
+		writeln(GLVclass.tYELLOW, "To add a DNS server to your list, you can type: " , GLVclass.tRESET ,
+				GLVclass.tBRIGHT_BLUE , "adddns ", GLVclass.tRESET);
+
+        //---------------
+
+        writeln(GLVclass.tYELLOW, "For exit, you can type this: ", GLVclass.tRESET,
+				GLVclass.tRED , "exit ", GLVclass.tRESET);
     }
 
     // Display list of public DNS servers
     void listDNSPublic()
     {
-        writeln(tCYAN, "Google DNS: ", tRESET, ["8.8.8.8", "8.8.4.4"]);
-        writeln(tCYAN, "CloudFlare DNS: ", tRESET, ["1.1.1.1", "1.0.0.1"]);
-        writeln(tCYAN, "OpenDns DNS: ", tRESET, ["208.67.222.222", "208.67.220.220"]);
-        writeln(tCYAN, "Quad9 DNS: ", tRESET, ["9.9.9.9", "149.112.112.112"]);
-        writeln(tCYAN, "Shecan DNS: ", tRESET, ["178.22.122.100", "185.51.200.2"], tCYAN, " Website: ", tRESET, "https://shecan.ir/" );
-        writeln(tMAGENTA , "A DNS breaker is a tool or service that bypasses DNS restrictions to access blocked websites, commonly used by Iranians; I'm unsure about its security." , tRESET);
+        writeln(GLVclass.tCYAN, "Google DNS: ", GLVclass.tRESET, ["8.8.8.8", "8.8.4.4"]);
+        writeln(GLVclass.tCYAN, "CloudFlare DNS: ", GLVclass.tRESET, ["1.1.1.1", "1.0.0.1"]);
+        writeln(GLVclass.tCYAN, "OpenDns DNS: ", GLVclass.tRESET, ["208.67.222.222", "208.67.220.220"]);
+        writeln(GLVclass.tCYAN, "Quad9 DNS: ", GLVclass.tRESET, ["9.9.9.9", "149.112.112.112"]);
+        writeln(GLVclass.tCYAN, "Shecan DNS: ", GLVclass.tRESET, ["178.22.122.100", "185.51.200.2"], GLVclass.tCYAN, " Website: ", GLVclass.tRESET, "https://shecan.ir/" );
+        writeln(GLVclass.tMAGENTA , "A DNS breaker is a tool or service that bypasses DNS restrictions to access blocked websites, commonly used by Iranians; I'm unsure about its security." , GLVclass.tRESET);
     }
 
 	string getUserInput(string prompt)
     {
-        writeln(tCYAN, prompt, tRESET);
+        writeln(GLVclass.tCYAN, prompt, GLVclass.tRESET);
         return strip(readln());
     }
 
     // Print a message with a specified color
-    void printMessage(string message, string color = tWHITE)
+    void printMessage(string message, string color = GLVclass.tWHITE)
     {
-        writeln(color, message, tRESET);
+        writeln(color, message, GLVclass.tRESET);
     }
 
     // Wait for the user to press Enter
     void waitForEnter()
     {
-        printMessage("Press Enter to continue...", tYELLOW);
+        printMessage("Press Enter to continue...", GLVclass.tYELLOW);
         readln();
     }
 
