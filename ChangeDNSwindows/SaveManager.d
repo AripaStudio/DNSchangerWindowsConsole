@@ -9,6 +9,7 @@ import std.algorithm;
 import std.range;
 import GLV;
 import std.array;
+import std.typecons : Tuple;
 
 public class JsonDataFileManager
 {
@@ -85,6 +86,11 @@ public class SaveManagerClass
 
 	void AddData(string Namedns , string onedns, string twodns)
 	{
+
+		Namedns = Namedns.strip();
+		onedns = onedns.strip();
+		twodns = twodns.strip();
+
 		if(Namedns.empty || onedns.empty || twodns.empty )
 		{
 			writeln("Error: DNS fields cannot be empty!");
@@ -110,9 +116,15 @@ public class SaveManagerClass
 
 	void  DeleteDNSdata(string nameDNS)
 	{
+		if(nameDNS.empty)
+		{
+			writeln("Error  , NameDNS is empty");
+			return;
+		}
 		ManagerData = ManagerData.filter!(c => c.NameDNS != nameDNS).array;
-		saveData();
-		writeln( nameDNS , " deleted successfully!");
+			saveData();
+			writeln( nameDNS , " deleted successfully!");
+		
 	}
 
 	void showAllDNS()
@@ -149,6 +161,26 @@ public class SaveManagerClass
 		writeln(GLVclass.tGREEN, "-----------", GLVclass.tRESET);
 
 	}
+
+	
+	Tuple!(string, string) ReturnDNS(string nameDNS)
+	{
+		auto result = ManagerData.find!(d => d.NameDNS == nameDNS);
+		if (result.empty)
+		{
+			writeln("No DNS found with NAME_DNS: ", nameDNS);
+			return Tuple!(string, string)("", ""); 
+		}
+
+		auto dns = result[0];		
+		writeln("One DNS: ", dns.OneDNS);
+		writeln("Two DNS: ", dns.TwoDNS);
+    
+
+		return Tuple!(string, string)(dns.OneDNS, dns.TwoDNS);
+	}
+
+	
 
 
 

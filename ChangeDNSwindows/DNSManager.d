@@ -128,6 +128,9 @@ public class DNSManagerClass
     }
 
 
+	
+
+
 	void resetDNS(string interfaceName)
 	{
 		int ErrorPowerShellTry = 0;
@@ -226,7 +229,40 @@ public class DNSManagerClass
     }
 
 
+	// DNS Custom Func : 
+	public void ChangeDNScustom(string interfaceName , string OneDNS , string TwoDNS)
+	{
 
+		if(interfaceName.empty && OneDNS.empty && TwoDNS.empty)
+		{
+			writeln("Error : interfaceName or OneDNS or TwoDNS is empty ");
+			return;
+		}
+        auto dnsCommand = format(
+								 `powershell -ExecutionPolicy Bypass -Command "Set-DnsClientServerAddress -InterfaceAlias '%s' -ServerAddresses ('%s', '%s')"`,
+								 interfaceName, OneDNS, TwoDNS
+								 );
+
+        auto result = executeShellCommand(dnsCommand);
+        int exitCode = to!int(result[0]);
+        string output = result[1];
+        string errorOutput = result[2];
+
+        if (exitCode == 0)
+        {
+            writeln("DNS servers set successfully for interface: ", interfaceName);
+            writeln("Primary DNS: ", OneDNS);
+            writeln("Secondary DNS: ", TwoDNS);
+        }
+        else
+        {
+            writeln("Error setting DNS servers:");
+            writeln(errorOutput);
+        }
+	}
+	
+
+	
 
 
 

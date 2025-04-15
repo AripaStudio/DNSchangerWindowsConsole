@@ -15,6 +15,7 @@ import core.sys.windows.winbase;
 import DNSManager;
 import ConsoleUI;
 import NetworkInterface;
+import SaveManager;
 
 //Aripa Studio 
 //V1.2.0
@@ -81,6 +82,7 @@ int main()
      auto dnsManager = new DNSManagerClass();
      auto networkinterface = new NetworkInterfaceClass();
 	 auto consoleUI = new ConsoleUIClass();
+	 auto saveManager = new SaveManagerClass();
 
 	 consoleUI.enableANSI();
 
@@ -100,60 +102,127 @@ int main()
 		while(true)
 		{
 			string inputStart = strip(readln()).toLower();
-			if(inputStart == "viewdns")
+			if(inputStart == "viewdns")//viewdns
 			{
 				consoleUI.listDNSPublic();
 				consoleUI.waitForEnter();
-			}else if(inputStart == "changedns")
+			}else if(inputStart == "showallc")//showallc
 			{
-				string interfaceName = consoleUI.getUserInput("First, please enter your Interface Name. To find it, you can use (Windows + R = control ncpa.cpl)");			
-
-				if(!interfaceName.empty)
+				saveManager.showAllDNS();
+			}else if(inputStart == "showdnsinfoc")//showdnsinfoc
+			{
+				writeln("Enter Name DNS");
+				string inputUserNameDNS = readln();
+				if(inputUserNameDNS.empty)
 				{
-					if(!networkinterface.isInterfaceActive(interfaceName))
+					writeln("No DNS found with NameDNS:" , inputUserNameDNS);
+				}else
+				{
+					saveManager.ShowDNS(inputUserNameDNS);
+				}				
+			}else if(inputStart == "adddnsc")//adddnsc
+			{
+				writeln("Enter Name DNS (Custom)");
+				string inputUserNameDNS = readln();
+				writeln("Enter One DNS(Preferred DNS server" );
+				string inputUserOneDNS = readln();
+				writeln("Enter Two DNS(Alternate DNS Server");
+				string inputUserTwoDNS = readln();
+				if(inputUserNameDNS.empty && inputUserOneDNS.empty && inputUserTwoDNS.empty)
+				{
+					writeln("Error: DNS fields cannot be empty!");
+				}else
+				{
+					saveManager.AddData(inputUserNameDNS , inputUserOneDNS , inputUserTwoDNS);
+				}
+			}else if(inputStart == "changednsc")//changednsc
+			{
+
+				writeln("Enter Name DNS");
+				string inputUserNameDNS = readln();
+				if(inputUserNameDNS.empty)
+				{
+					writeln("No DNS found with NameDNS:" , inputUserNameDNS);
+				}else
+				{
+
+					auto DNS = saveManager.ReturnDNS(inputUserNameDNS);
+					string OneDNS = DNS[0];
+					string TwoDNS = DNS[1];
+					string inputUserinterfaceName = consoleUI.getUserInput("First, please enter your Interface Name. To find it, you can use (Windows + R = control ncpa.cpl)");			
+					if(!networkinterface.isInterfaceActive(inputUserinterfaceName))
 					{
-						consoleUI.printMessage(" Error : interface " ~ interfaceName ~ " Not Connect", "\033[31m");
+						consoleUI.printMessage(" Error : interface " ~ inputUserinterfaceName ~ " Not Connect", "\033[31m");
 						continue;
 					}
+					dnsManager.ChangeDNScustom(inputUserinterfaceName , OneDNS , TwoDNS);
+					
+				}	
 
-					string dnsName = consoleUI.getUserInput("Please Enter DNS: (shecan, google, cloudflare, quad9, opendns)");
-					dnsManager.selectDNS(dnsName);
 
-					if(dnsManager.getSelectedDNSServer() != DNSServer.none)
+
+			}else if(inputStart == "deletednsc")
+			{
+				writeln("Enter name DNS for Delete : ");
+				string inputUserDelete =  readln().strip();
+				if(inputUserDelete.empty)
+				{
+					writeln("Error , NameDNS is empty ");
+					continue;
+				}
+				saveManager.DeleteDNSdata(inputUserDelete);
+
+
+			}else if(inputStart == "changedns")
+			{
+					string interfaceName = consoleUI.getUserInput("First, please enter your Interface Name. To find it, you can use (Windows + R = control ncpa.cpl)");			
+
+					if(!interfaceName.empty)
 					{
-						dnsManager.changeDNS(interfaceName);
+						if(!networkinterface.isInterfaceActive(interfaceName))
+						{
+							consoleUI.printMessage(" Error : interface " ~ interfaceName ~ " Not Connect", "\033[31m");
+							continue;
+						}
+
+						string dnsName = consoleUI.getUserInput("Please Enter DNS: (shecan, google, cloudflare, quad9, opendns)");
+						dnsManager.selectDNS(dnsName);
+
+						if(dnsManager.getSelectedDNSServer() != DNSServer.none)
+						{
+							dnsManager.changeDNS(interfaceName);
+
+						}else
+						{
+							consoleUI.printMessage("Error: Invalid DNS server selected.", "\033[31m");
+
+						}
+
 
 					}else
 					{
-						consoleUI.printMessage("Error: Invalid DNS server selected.", "\033[31m");
-
+						consoleUI.printMessage("Error: Interface name cannot be empty.", "\033[31m");			
 					}
-
-
-				}else
+				}else if(inputStart == "deletedns")
 				{
-					consoleUI.printMessage("Error: Interface name cannot be empty.", "\033[31m");			
-				}
-			}else if(inputStart == "deletedns")
-			{
-				string interfaceName = consoleUI.getUserInput("First, please enter your Interface Name. To find it, you can use (Windows + R = control ncpa.cpl)");				
+					string interfaceName = consoleUI.getUserInput("First, please enter your Interface Name. To find it, you can use (Windows + R = control ncpa.cpl)");				
 
-				if(!interfaceName.empty)
-				{
-					if(!networkinterface.isInterfaceActive(interfaceName))
+					if(!interfaceName.empty)
 					{
-						consoleUI.printMessage(" Error : interface " ~ interfaceName ~ " Not Connect", "\033[31m");
-						continue;
+						if(!networkinterface.isInterfaceActive(interfaceName))
+						{
+							consoleUI.printMessage(" Error : interface " ~ interfaceName ~ " Not Connect", "\033[31m");
+							continue;
+						}
+
+						dnsManager.resetDNS(interfaceName);
+						consoleUI.waitForEnter();
+
+
+					}else
+					{
+						consoleUI.printMessage("Error: Interface name cannot be empty.", "\033[31m");
 					}
-
-					dnsManager.resetDNS(interfaceName);
-					consoleUI.waitForEnter();
-
-
-				}else
-				{
-					consoleUI.printMessage("Error: Interface name cannot be empty.", "\033[31m");
-				}
 			}else if(inputStart == "exit")
 			{
 				break;
@@ -164,7 +233,7 @@ int main()
 			}
 			else
 			{
-				consoleUI.printMessage("Please Enter (exit), (ViewDNS), (ChangeDNS), (deleteDNS), (showMydns)", "\033[31m");
+				consoleUI.printMessage("Please Enter (exit), (ViewDNS), (ChangeDNS), (deleteDNS), (showMydns) |Custom DNS section| = (showALLc) (showDnsInfoC) , (addDNSC) , (changeDNSC) , (DeleteDNSC) ", "\033[31m");
 			}
 		}
 		
