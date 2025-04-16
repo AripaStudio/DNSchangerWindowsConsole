@@ -177,7 +177,7 @@ public class SaveManagerClass
 	
 	Tuple!(string, string) ReturnDNS(string nameDNS)
 	{
-		auto result = ManagerData.find!(d => d.NameDNS == nameDNS);
+		auto result = ManagerData.find!(d => d.NameDNS.toLower() == nameDNS.toLower());
 		if (result.empty)
 		{
 			writeln("No DNS found with NAME_DNS: ", nameDNS);

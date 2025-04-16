@@ -16,6 +16,7 @@ import DNSManager;
 import ConsoleUI;
 import NetworkInterface;
 import SaveManager;
+import GLV;
 
 //Aripa Studio 
 //V1.2.0
@@ -74,7 +75,13 @@ bool isRunningAsAdmin()
 
 
 
-
+/*
+باید متد 
+Main 
+رو تمیز کنم خیلی کثیفه
+:)
+*/
+	
 
 
 int main()
@@ -139,23 +146,40 @@ int main()
 			{
 
 				writeln("Enter Name DNS");
-				string inputUserNameDNS = readln().strip();
+				string inputUserNameDNS = readln().strip().toLower();
 				if(inputUserNameDNS.empty)
 				{
 					writeln("No DNS found with NameDNS:" , inputUserNameDNS);
 				}else
 				{
-
-					auto DNS = saveManager.ReturnDNS(inputUserNameDNS);
-					string OneDNS = DNS[0];
-					string TwoDNS = DNS[1];
-					string inputUserinterfaceName = consoleUI.getUserInput("First, please enter your Interface Name. To find it, you can use (Windows + R = control ncpa.cpl)");			
-					if(!networkinterface.isInterfaceActive(inputUserinterfaceName))
+					while(true)
 					{
-						consoleUI.printMessage(" Error : interface " ~ inputUserinterfaceName ~ " Not Connect", "\033[31m");
-						continue;
+						writeln(GLVclass.tGREEN , "Are you sure this DNS is secure?");
+						writeln("for Return , you can type : Return");
+						writeln("To continue, type: Yes" , GLVclass.tRESET);
+						string certitude = readln().strip().toLower();
+						if(certitude == "return")
+						{
+							break;
+						}else if(certitude == "yes")
+						{
+							auto DNS = saveManager.ReturnDNS(inputUserNameDNS);
+							string OneDNS = DNS[0];
+							string TwoDNS = DNS[1];
+							string inputUserinterfaceName = consoleUI.getUserInput("First, please enter your Interface Name. To find it, you can use (Windows + R = control ncpa.cpl)");			
+							if(!networkinterface.isInterfaceActive(inputUserinterfaceName))
+							{
+								consoleUI.printMessage(" Error : interface " ~ inputUserinterfaceName ~ " Not Connect", "\033[31m");
+								break;
+							}
+							dnsManager.ChangeDNScustom(inputUserinterfaceName , OneDNS , TwoDNS);
+							break;
+
+						}else
+						{
+							writeln("please type (yes) , (return)");
+						}
 					}
-					dnsManager.ChangeDNScustom(inputUserinterfaceName , OneDNS , TwoDNS);
 					
 				}	
 
