@@ -112,7 +112,7 @@ int main()
 			}else if(inputStart == "showdnsinfoc")//showdnsinfoc
 			{
 				writeln("Enter Name DNS");
-				string inputUserNameDNS = readln();
+				string inputUserNameDNS = readln().strip();
 				if(inputUserNameDNS.empty)
 				{
 					writeln("No DNS found with NameDNS:" , inputUserNameDNS);
@@ -123,7 +123,7 @@ int main()
 			}else if(inputStart == "adddnsc")//adddnsc
 			{
 				writeln("Enter Name DNS (Custom)");
-				string inputUserNameDNS = readln();
+				string inputUserNameDNS = readln().strip();
 				writeln("Enter One DNS(Preferred DNS server" );
 				string inputUserOneDNS = readln();
 				writeln("Enter Two DNS(Alternate DNS Server");
