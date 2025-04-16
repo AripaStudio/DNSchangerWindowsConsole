@@ -139,7 +139,7 @@ int main()
 			{
 
 				writeln("Enter Name DNS");
-				string inputUserNameDNS = readln();
+				string inputUserNameDNS = readln().strip();
 				if(inputUserNameDNS.empty)
 				{
 					writeln("No DNS found with NameDNS:" , inputUserNameDNS);
