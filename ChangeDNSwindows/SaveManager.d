@@ -121,12 +121,20 @@ public class SaveManagerClass
 			writeln("Error  , NameDNS is empty");
 			return;
 		}
-		if(ManagerData.filter!(c => c.NameDNS == nameDNS ).array)
+		auto existingData = ManagerData.filter!(c => c.NameDNS == nameDNS).array;
+
+		if(existingData.empty)
 		{
-			saveData();
-			writeln( nameDNS , " deleted successfully!");
+			writeln("Error: No DNS found with NameDNS: ", nameDNS);
+			return;
 		}
-		//ManagerData = ManagerData.filter!(c => c.NameDNS != nameDNS).array;
+
+		
+		ManagerData = ManagerData.filter!(c => c.NameDNS != nameDNS).array;
+
+		
+		saveData();
+		writeln(nameDNS, " deleted successfully!");
 			
 		
 	}
