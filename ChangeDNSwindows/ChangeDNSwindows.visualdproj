@@ -511,5 +511,6 @@
   <File path="GLV.d" />
   <File path="NetworkInterface.d" />
   <File path="SaveManager.d" />
+  <File path="SaveMangaerInterface.d" />
  </Folder>
 </DProject>
