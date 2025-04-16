@@ -40,7 +40,13 @@ public class ConsoleUIClass
          writeln(GLVclass.tCYAN, "(DNCaripa = (DN = DNS , C = Changer , aripa = Aripa Studio ))", GLVclass.tRESET);    
         //---------------
 
-        writeln(GLVclass.tCYAN, "V1.2.0 (Aripa Studio) - (DNS Changer)", GLVclass.tRESET);  
+        writeln(GLVclass.tCYAN, "V1.4.0 (Aripa Studio) - (DNS Changer)", GLVclass.tRESET);  
+
+        //---------------
+		writeln(GLVclass.tYELLOW, "To change the current InterfaceName, add an InterfaceName, or remove other changes, you can type: setting : ", GLVclass.tRESET,
+				GLVclass.tBRIGHT_BLUE , "Setting", GLVclass.tRESET);
+
+
         //---------------
 
         writeln(GLVclass.tGREEN, "Program is running with administrative privileges.", GLVclass.tRESET);  
@@ -87,6 +93,7 @@ public class ConsoleUIClass
 
 
         //---------------
+		
 
         writeln(GLVclass.tYELLOW, "For exit, you can type this: ", GLVclass.tRESET,
 				GLVclass.tRED , "exit ", GLVclass.tRESET);
