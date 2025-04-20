@@ -40,7 +40,7 @@ public class ConsoleUIClass
          writeln(GLVclass.tCYAN, "(DNCaripa = (DN = DNS , C = Changer , aripa = Aripa Studio ))", GLVclass.tRESET);    
         //---------------
 
-        writeln(GLVclass.tCYAN, "V1.3.1 (Aripa Studio) - (DNS Changer)", GLVclass.tRESET);  
+        writeln(GLVclass.tCYAN, "V1.4.0 (Aripa Studio) - (DNS Changer)", GLVclass.tRESET);  
       
         //---------------
         writeln(GLVclass.tGREEN, "Program is running with administrative privileges.", GLVclass.tRESET);  

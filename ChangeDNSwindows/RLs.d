@@ -16,6 +16,12 @@ class CRLs
         InterfaceManager = new SaveMangerInterFaceClass();
     }
 
+    SaveMangerInterFaceClass GetInterfaceManager()
+    {
+        return InterfaceManager;
+    }
+
+
     string AddInterFace()
     {
         writeln("Please Enter Your InterFace(Save in Software)");

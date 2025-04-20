@@ -146,44 +146,59 @@ int main()
 				}
 			}else if(inputStart == "changednsc")//changednsc
 			{
-
 				writeln("Enter Name DNS");
 				string inputUserNameDNS = readln().strip().toLower();
-				if(inputUserNameDNS.empty)
+				if (inputUserNameDNS.empty)
 				{
-					writeln("No DNS found with NameDNS:" , inputUserNameDNS);
-				}else
-				{
-					while(true)
-					{
-						writeln(GLVclass.tGREEN , "Are you sure this DNS is secure?");
-						writeln("for Return , you can type : Return");
-						writeln("To continue, type: Yes" , GLVclass.tRESET);
-						string certitude = readln().strip().toLower();
-						if(certitude == "return")
-						{
-							break;
-						}else if(certitude == "yes")
-						{
-							auto DNS = saveManager.ReturnDNS(inputUserNameDNS);
-							string OneDNS = DNS[0];
-							string TwoDNS = DNS[1];
-							string inputUserinterfaceName = consoleUI.getUserInput("First, please enter your Interface Name. To find it, you can use (Windows + R = control ncpa.cpl)");			
-							if(!networkinterface.isInterfaceActive(inputUserinterfaceName))
-							{
-								consoleUI.printMessage(" Error : interface " ~ inputUserinterfaceName ~ " Not Connect", "\033[31m");
-								break;
-							}
-							dnsManager.ChangeDNScustom(inputUserinterfaceName , OneDNS , TwoDNS);
-							break;
+					writeln("No DNS found with NameDNS:", inputUserNameDNS);
+					continue;
+				}
 
-						}else
-						{
-							writeln("please type (yes) , (return)");
-						}
+				string interfaceName = crls.GetInterfaceManager().GetSelectedInterface();
+				if (interfaceName.empty)
+				{
+					consoleUI.printMessage("Error: No interface selected. Please go to 'setting' and select an interface using 'selectedif'.", "\033[31m");
+					continue;
+				}
+
+				bool shouldContinue = true;
+				while (true)
+				{
+					writeln(GLVclass.tGREEN, "Are you sure this DNS is secure?");
+					writeln("For Return, you can type: Return");
+					writeln("To continue, type: Yes", GLVclass.tRESET);
+					string certitude = readln().strip().toLower();
+					if (certitude == "return")
+					{
+						shouldContinue = false;
+						break;
 					}
+					else if (certitude == "yes")
+					{
+						auto DNS = saveManager.ReturnDNS(inputUserNameDNS);
+						string OneDNS = DNS[0];
+						string TwoDNS = DNS[1];
+						if (!networkinterface.isInterfaceActive(interfaceName))
+						{
+							consoleUI.printMessage("Error: Interface " ~ interfaceName ~ " is not connected.", "\033[31m");
+							shouldContinue = false;
+							break;
+						}
+						dnsManager.ChangeDNScustom(interfaceName, OneDNS, TwoDNS);
+						break;
+					}
+					else
+					{
+						writeln("Please type (yes), (return)");
+					}
+				}
+
+				if (!shouldContinue)
+				{
+					continue;
+				}
 					
-				}	
+				
 
 
 
@@ -201,7 +216,7 @@ int main()
 
 			}else if(inputStart == "changedns")
 			{
-					string interfaceName = consoleUI.getUserInput("First, please enter your Interface Name. To find it, you can use (Windows + R = control ncpa.cpl)");			
+					string interfaceName = crls.GetInterfaceManager().GetSelectedInterface();
 
 					if(!interfaceName.empty)
 					{
@@ -227,11 +242,17 @@ int main()
 
 					}else
 					{
-						consoleUI.printMessage("Error: Interface name cannot be empty.", "\033[31m");			
+						consoleUI.printMessage("Error: No interface selected. Please go to 'setting' and select an interface using 'selectedif'.", "\033[31m");
+						continue;
 					}
+
+
+
+
+
 				}else if(inputStart == "deletedns")
 				{
-					string interfaceName = consoleUI.getUserInput("First, please enter your Interface Name. To find it, you can use (Windows + R = control ncpa.cpl)");				
+					string interfaceName = crls.GetInterfaceManager().GetSelectedInterface();
 
 					if(!interfaceName.empty)
 					{
@@ -247,7 +268,8 @@ int main()
 
 					}else
 					{
-						consoleUI.printMessage("Error: Interface name cannot be empty.", "\033[31m");
+						consoleUI.printMessage("Error: No interface selected. Please go to 'setting' and select an interface using 'selectedif'.", "\033[31m");
+						continue;
 					}
 			}else if(inputStart == "exit")
 			{
@@ -261,7 +283,7 @@ int main()
 				crls.InterFaceSetting();
 			}else
 			{
-				consoleUI.printMessage("Please Enter (exit), (ViewDNS), (ChangeDNS), (deleteDNS), (showMydns) |Custom DNS section| = (showALLc) (showDnsInfoC) , (addDNSC) , (changeDNSC) , (DeleteDNSC) ", "\033[31m");
+				consoleUI.printMessage("Please enter: (exit), (viewdns), (changedns), (deletedns), (showmydns), (setting) | Custom DNS section: (showallc), (showdnsinfoc), (adddnsc), (changednsc), (deletednsc)", "\033[31m");
 			}
 		}
 		

@@ -47,6 +47,12 @@ public class SaveMangerInterFaceClass
 	private JsonDataFileManager[] ManagerData;
 	private string selectedInterface;
 
+
+	string GetSelectedInterface()
+    {
+        return selectedInterface;
+    }
+
 	this()
 	{
 		loadData();
