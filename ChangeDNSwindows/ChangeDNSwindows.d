@@ -19,7 +19,7 @@ import SaveManager;
 import GLV;
 
 //Aripa Studio 
-//V1.2.0
+//V1.4.0
 //khashayar mobasheri
 
 
@@ -254,8 +254,10 @@ int main()
 			{
 				dnsManager.showDNS();
 				consoleUI.waitForEnter();
-			}
-			else
+			}else if(inputStart == "setting")
+			{
+				
+			}else
 			{
 				consoleUI.printMessage("Please Enter (exit), (ViewDNS), (ChangeDNS), (deleteDNS), (showMydns) |Custom DNS section| = (showALLc) (showDnsInfoC) , (addDNSC) , (changeDNSC) , (DeleteDNSC) ", "\033[31m");
 			}

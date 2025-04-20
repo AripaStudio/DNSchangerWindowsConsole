@@ -510,6 +510,7 @@
   <File path="DNSManager.d" />
   <File path="GLV.d" />
   <File path="NetworkInterface.d" />
+  <File path="RLs.d" />
   <File path="SaveManager.d" />
   <File path="SaveMangaerInterface.d" />
  </Folder>
