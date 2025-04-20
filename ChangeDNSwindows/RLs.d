@@ -1,30 +1,36 @@
 module RLs;
 
 import std.stdio;
-import SaveMangaerInterface;
+import SaveMangaerInterface; 
 import GLV;
 import core.sys.windows.windows;
 import std.string;
 
 class CRLs
 {
-    private SaveMangerInterFaceClass InterFaceMangaer; 
+    private SaveMangerInterFaceClass InterfaceManager; 
+
     this()
     {
-        InterFaceMangaer = new SaveMangerInterFaceClass();
+        InterfaceManager = new SaveMangerInterFaceClass();
     }
 
-    void AddInterFace(string NameInterface)
+    string AddInterFace()
     {
         writeln("Please Enter Your InterFace(Save in Software)");
         string InterFace = readln().strip();
         if (!InterFace.empty)
         {
-            // ...
+            InterfaceManager.AddData(InterFace);
+            writeln("Interface added successfully! Current saved interfaces:");
+            InterfaceManager.ShowAll();
+            return InterFace;
         }
         else
         {
             writeln("Error : Input is empty");
+            return null;    
         }
+        
     }
 }
