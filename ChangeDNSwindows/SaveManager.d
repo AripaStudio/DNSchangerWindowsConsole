@@ -101,7 +101,7 @@ public class SaveManagerClass
 		bool checkOnedns = rls.isValidIPv4(onedns);
 		bool checkTwodns = rls.isValidIPv4(twodns);
 
-		if(checkOnedns == false && checkTwodns == false)
+		if(!checkOnedns || !checkTwodns)
 		{
 			writeln("Error: Invalid IP address format for OneDNS/TwoDNS. It must be in the format xxx.xxx.xxx.xxx where each part is between 0 and 255.");
 			return;
