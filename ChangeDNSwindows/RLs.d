@@ -5,6 +5,7 @@ import SaveMangaerInterface;
 import GLV;
 import core.sys.windows.windows;
 import std.string;
+import std.conv;
 import ConsoleUI;
 
 class CRLs
@@ -132,6 +133,33 @@ class CRLs
 				writeln("Please type (addif), (deleteif), (showallif), (selectedif), (return)");
 			}
 		}
+	}
+
+
+    bool isValidIPv4(string dns)
+	{
+        string[] DNSsplit = dns.split('.');
+        if(DNSsplit.length != 4)
+		{
+            return false;
+		}
+
+        foreach(part; DNSsplit)
+		{
+            try
+			{
+				int num = to!int(part);
+                if(num < 0 || num > 255)
+				{
+                    return false;
+				}
+			}catch(ConvException)
+			{
+                return false;
+			}
+		}
+
+        return true;
 	}
 
 }

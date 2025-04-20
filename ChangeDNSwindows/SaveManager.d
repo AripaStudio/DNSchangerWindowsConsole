@@ -8,6 +8,7 @@ import std.string;
 import std.algorithm;
 import std.range;
 import GLV;
+import RLs;
 import std.array;
 import std.typecons : Tuple;
 
@@ -86,7 +87,7 @@ public class SaveManagerClass
 
 	void AddData(string Namedns , string onedns, string twodns)
 	{
-
+		auto rls = new CRLs();
 		Namedns = Namedns.strip();
 		onedns = onedns.strip();
 		twodns = twodns.strip();
@@ -96,6 +97,16 @@ public class SaveManagerClass
 			writeln("Error: DNS fields cannot be empty!");
 			return;
 		}
+
+		bool checkOnedns = rls.isValidIPv4(onedns);
+		bool checkTwodns = rls.isValidIPv4(twodns);
+
+		if(checkOnedns == false && checkTwodns == false)
+		{
+			writeln("Error: Invalid IP address format for OneDNS/TwoDNS. It must be in the format xxx.xxx.xxx.xxx where each part is between 0 and 255.");
+			return;
+		}
+
 
 		if(ManagerData.any!(data => data.NameDNS == Namedns))
 		{
