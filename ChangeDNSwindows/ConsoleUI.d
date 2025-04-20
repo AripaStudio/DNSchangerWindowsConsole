@@ -47,8 +47,8 @@ public class ConsoleUIClass
 
 		//---------------		
 
-        writeln(GLVclass.tYELLOW, "To change the current InterfaceName, add an InterfaceName, or remove other changes, you can type: setting : ", GLVclass.tRESET,
-				GLVclass.tBRIGHT_BLUE , "Setting(in V1.4.0(Soon))", GLVclass.tRESET);
+        writeln(GLVclass.tYELLOW, "To change the current InterfaceName, add an InterfaceName, or remove other changes, you can type : ", GLVclass.tRESET,
+				GLVclass.tBRIGHT_BLUE , "Setting", GLVclass.tRESET);
         //---------------
 
         writeln(GLVclass.tYELLOW, "For public DNS: ", GLVclass.tRESET , 
@@ -127,6 +127,17 @@ public class ConsoleUIClass
         printMessage("Press Enter to continue...", GLVclass.tYELLOW);
         readln();
     }
+
+    void HelpSetting()
+	{
+        
+		writeln(GLVclass.tCYAN, "Interface Settings Menu", GLVclass.tRESET);
+        writeln(GLVclass.tYELLOW, "To add a new interface, type: ", GLVclass.tBRIGHT_BLUE, "addif", GLVclass.tRESET);
+        writeln(GLVclass.tYELLOW, "To delete an interface, type: ", GLVclass.tBRIGHT_BLUE, "deleteif", GLVclass.tRESET);
+        writeln(GLVclass.tYELLOW, "To show all interfaces, type: ", GLVclass.tBRIGHT_BLUE, "showallif", GLVclass.tRESET);
+        writeln(GLVclass.tYELLOW, "To select an interface, type: ", GLVclass.tBRIGHT_BLUE, "selectedif", GLVclass.tRESET);
+        writeln(GLVclass.tYELLOW, "To return to the main menu, type: ", GLVclass.tBRIGHT_BLUE, "return", GLVclass.tRESET);
+	}
 
 
 }

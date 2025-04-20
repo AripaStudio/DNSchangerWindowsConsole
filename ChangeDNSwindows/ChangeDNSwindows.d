@@ -91,6 +91,7 @@ int main()
      auto networkinterface = new NetworkInterfaceClass();
 	 auto consoleUI = new ConsoleUIClass();
 	 auto saveManager = new SaveManagerClass();
+	 auto crls = new CRLs();
 
 	 consoleUI.enableANSI();
 
@@ -257,7 +258,7 @@ int main()
 				consoleUI.waitForEnter();
 			}else if(inputStart == "setting")
 			{
-				
+				crls.InterFaceSetting();
 			}else
 			{
 				consoleUI.printMessage("Please Enter (exit), (ViewDNS), (ChangeDNS), (deleteDNS), (showMydns) |Custom DNS section| = (showALLc) (showDnsInfoC) , (addDNSC) , (changeDNSC) , (DeleteDNSC) ", "\033[31m");
@@ -267,9 +268,7 @@ int main()
 		return 0;
 	}
 
-	void InterFaceSetting()
-	{
-		
-	}
+
+	
    
 }

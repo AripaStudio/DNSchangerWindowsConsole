@@ -15,6 +15,7 @@ import std.typecons : Tuple;
 public class JsonDataFileManager
 {
 	public string NameInterFace;
+	
 	//public string Lang;
 	
 
@@ -22,6 +23,8 @@ public class JsonDataFileManager
 	{
 		return JSONValue([
 		"NameInterFace" : JSONValue(NameInterFace)
+		
+
 		]);
 	}
 
@@ -30,8 +33,9 @@ public class JsonDataFileManager
 		auto result = new JsonDataFileManager();
 		if("NameInterFace" in json)
 		{
-			result.NameInterFace = json["NameInterFace"].str;
+			result.NameInterFace = json["NameInterFace"].str;			
 		}
+		
 		return result;
 	}
 
@@ -41,7 +45,7 @@ public class SaveMangerInterFaceClass
 {
 	private string fileName = "dns_data_user.json";
 	private JsonDataFileManager[] ManagerData;
-
+	private string selectedInterface;
 
 	this()
 	{
@@ -129,10 +133,41 @@ public class SaveMangerInterFaceClass
 
 		foreach(Data; ManagerData)
 		{
-			writeln("Name InterFace  :  ", Data.NameInterFace);
-			writeln(GLVclass.tBLUE , "-----------" , GLVclass.tRESET);
+			writeln("Name InterFace  :  ", Data.NameInterFace);			
+			writeln(GLVclass.tBLUE , "-----------" , GLVclass.tRESET);			
 		}
+		if(selectedInterface.empty)
+		{
+			writeln(GLVclass.tBLUE, "No Interface selected.", GLVclass.tRESET);
+        }
+        else
+        {
+            writeln(GLVclass.tBLUE, "Selected Interface: ", selectedInterface, GLVclass.tRESET);
+        }
+		
+		
 	}
+
+	void SelectInterface(string selectedInterface)
+    {
+        selectedInterface = selectedInterface.strip();
+        if (selectedInterface.empty)
+        {
+            writeln("Error: Name fields cannot be empty!");
+            return;
+        }
+
+        auto existingData = ManagerData.filter!(c => c.NameInterFace == selectedInterface).array;
+        if (existingData.empty)
+        {
+            writeln("Error: No Interface found with Name Interface: ", selectedInterface);
+            return;
+        }
+
+        this.selectedInterface = selectedInterface;
+        writeln("Interface selected successfully");
+        writeln("Selected Interface: ", selectedInterface);
+    }
 
 
 }
