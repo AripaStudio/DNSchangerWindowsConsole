@@ -4,6 +4,7 @@ module ConsoleUI;
 import std.stdio;
 import std.string;
 import core.sys.windows.windows;
+import RLs;
 import GLV;
 
 public class ConsoleUIClass
@@ -35,12 +36,16 @@ public class ConsoleUIClass
     // Display help message
     void showHelp()
     {
+        auto crls = new CRLs();  
+
+        string checkSelected = crls.GetInterfaceManager().GetSelectedInterface();
+       
         writeln(GLVclass.tCYAN, "Welcome to our program (Aripa Studio) - (DNCaripa)", GLVclass.tRESET);    
         //---------------
          writeln(GLVclass.tCYAN, "(DNCaripa = (DN = DNS , C = Changer , aripa = Aripa Studio ))", GLVclass.tRESET);    
         //---------------
 
-        writeln(GLVclass.tCYAN, "V1.4.1 (Aripa Studio) - (DNS Changer)", GLVclass.tRESET);  
+        writeln(GLVclass.tCYAN, "V1.4.2 (Aripa Studio) - (DNS Changer)", GLVclass.tRESET);  
       
         //---------------
         writeln(GLVclass.tGREEN, "Program is running with administrative privileges.", GLVclass.tRESET);  
@@ -96,6 +101,15 @@ public class ConsoleUIClass
 
         writeln(GLVclass.tYELLOW, "For exit, you can type this: ", GLVclass.tRESET,
 				GLVclass.tRED , "exit ", GLVclass.tRESET);
+
+
+        //check if selected interface is empty
+		if(checkSelected.empty)
+		{
+            writeln(GLVclass.tRED , "No interface selected. Please go to 'setting' and select an interface using 'selectedif'." , GLVclass.tRESET);
+		}
+
+
     }
 
     // Display list of public DNS servers
