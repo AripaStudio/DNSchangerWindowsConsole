@@ -6,6 +6,7 @@ import std.string;
 import std.format;
 import std.conv : to;
 import std.array : join, array;
+import RLs;
 import std.algorithm : map;
 
 
@@ -24,6 +25,7 @@ enum DNSServer
 public class DNSManagerClass
 {
 
+	
 
 	//ANSI Colors
 	enum tRESET = "\033[0m";
@@ -260,8 +262,80 @@ public class DNSManagerClass
             writeln(errorOutput);
         }
 	}
-	
 
+	//Ping DNS 
+	 public void PingDNS(string DNSname)
+	 {
+			auto crls = new CRLs;
+			
+			DNSname = DNSname.strip();
+
+			int CheckError = 0;
+			
+			if(DNSname.empty)
+			{
+				writeln(" Error : DNS name : empty");
+				CheckError = 0;
+				
+			}else
+			{
+				CheckError++;
+			}
+			if(!crls.isValidIPv4(DNSname))
+			{
+				writeln("this dns is not Valid");				
+				CheckError = 0;
+			}else
+			{
+				CheckError++;
+			}
+			if(CheckError == 2)
+			{
+
+				try
+				{
+
+					auto dnsCommand = "Resolve-DnsName -Name google.com -Server " ~ DNSname ~" -Type A";
+					auto result = executeShellCommand(dnsCommand);
+					int exitCode = to!int(result[0]);
+					string output = result[1];
+					string errorOutput = result[2];
+					if(exitCode == 0)
+					{
+						writeln("Ping DNS : ");
+						writeln(output);
+
+					}else
+					{
+						writeln("Error : ");
+						writeln(errorOutput);
+					}
+				}catch(Exception e)
+				{
+					writeln("ERROR executing command " , e.msg);
+
+				}
+			}
+			
+	 }
+	 //ping dns Custom
+	 public void PingDNSC()
+	 {
+
+	 }
+	 
+
+	 //Check activ DNS
+	 public void ChActivDNS(string DNSname)
+	 {
+
+	 }
+	 //check activ  DNS custom
+	 public void ChActiveDNSC()
+	 {
+			
+	 }
+	
 	
 
 

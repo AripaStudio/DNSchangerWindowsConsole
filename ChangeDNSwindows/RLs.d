@@ -163,3 +163,8 @@ class CRLs
 	}
 
 }
+
+public class CRLsPing
+{
+
+}

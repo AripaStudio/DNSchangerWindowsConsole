@@ -54,6 +54,11 @@ public class ConsoleUIClass
 
         writeln(GLVclass.tYELLOW, "To change the current InterfaceName, add an InterfaceName, or remove other changes, you can type : ", GLVclass.tRESET,
 				GLVclass.tBRIGHT_BLUE , "Setting", GLVclass.tRESET);
+
+        //---------------		
+
+        writeln(GLVclass.tYELLOW, "to ping a DNS and check if it's active and ... , you can type: : ", GLVclass.tRESET,
+				GLVclass.tBRIGHT_BLUE , "Ping", GLVclass.tRESET);
         //---------------
 
         writeln(GLVclass.tYELLOW, "For public DNS: ", GLVclass.tRESET , 
