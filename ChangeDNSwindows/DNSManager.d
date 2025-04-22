@@ -295,7 +295,7 @@ public class DNSManagerClass
 				try
 				{
 
-					auto dnsCommand = "Resolve-DnsName -Name google.com -Server " ~ DNSname ~" -Type A";
+					auto dnsCommand = "Test-Connection -ComputerName "~ DNSname ~" -Count 4";
 					auto result = executeShellCommand(dnsCommand);
 					int exitCode = to!int(result[0]);
 					string output = result[1];
