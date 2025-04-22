@@ -4,9 +4,9 @@ module NetworkInterface;
 import std.stdio;
 import std.process;
 import std.string;
-import std.conv : to;
-import std.array : join, array;
-import std.algorithm : map, filter;
+import std.conv;
+import std.array ;
+import std.algorithm;
 
 
 enum tRESET = "\033[0m";

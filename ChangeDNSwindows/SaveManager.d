@@ -10,7 +10,7 @@ import std.range;
 import GLV;
 import RLs;
 import std.array;
-import std.typecons : Tuple;
+import std.typecons;
 
 public class JsonDataFileManager
 {
@@ -45,7 +45,7 @@ public class JsonDataFileManager
 public class SaveManagerClass
 {
 
-	private string fileName = "dns_data_json.json";
+	public string fileName = "dns_data_json.json";
 	private JsonDataFileManager[] ManagerData;
 
 	this()

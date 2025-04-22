@@ -7,6 +7,10 @@ import core.sys.windows.windows;
 import std.string;
 import std.conv;
 import ConsoleUI;
+import std.json; 
+import std.file; 
+import std.algorithm;
+import std.string; 
 
 class CRLs
 {
@@ -166,5 +170,38 @@ class CRLs
 
 public class CRLsPing
 {
+    
+}
 
+public class CRLsWJson
+{
+    public JSONValue ReadJson(string fileName)
+	{
+        JSONValue empty ;
+        if(fileName.empty)
+		{
+            writeln("error fileName is empty");
+            return empty ;
+		}      
+        string jsonContent;
+        try
+		{
+            jsonContent = readText(fileName);
+		}catch(Exception e)
+		{
+            writeln("Error Read File " , e.msg);
+            return empty;
+		}
+
+        JSONValue jsonData;
+        try
+		{
+            jsonData = parseJSON(jsonContent);
+		}catch(Exception e )
+		{
+            writeln("Error Parse Json " , e.msg);
+		} 
+        return jsonData;
+
+	}
 }

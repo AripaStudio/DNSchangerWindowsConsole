@@ -4,10 +4,12 @@ import std.stdio;
 import std.process;
 import std.string;
 import std.format;
-import std.conv : to;
-import std.array : join, array;
+import std.conv;
+import std.array;
 import RLs;
-import std.algorithm : map;
+import SaveManager;
+import std.algorithm;
+import std.json;
 
 
 enum DNSServer
@@ -319,9 +321,96 @@ public class DNSManagerClass
 			
 	 }
 	 //ping dns Custom
-	 public void PingDNSC()
-	 {
+	 public void PingDNSC(string DNSname)
+	 {	
+		if(DNSname.empty)
+		{
+			writeln("Error : DNS name is empty");
+			return;
+		}
+
+		auto saveManager = new  SaveManagerClass();
+		auto crls = new CRLs();
+		auto crlsPing = new CRLsPing();
+		auto crlsJson = new CRLsWJson();
+		string DNSOne;
+		string DNSTwo;
+
+
+		auto JsonData = crlsJson.ReadJson(saveManager.fileName);
 		
+		auto matchingObjects = JsonData.array
+			.filter!(f => f.type == JSONType.object &&
+					 "NameDNS" in f &&
+						 f["NameDNS"].str == DNSname)
+			.array;
+
+		if (matchingObjects.length == 0) 
+		{			
+			writeln("No objects found with NameDNS: ", DNSname);
+			return;
+		}
+
+		
+		if (matchingObjects.length >= 2)
+		{
+			DNSOne = to!string(matchingObjects[1]); 
+		}
+		if (matchingObjects.length >= 3)
+		{
+			DNSTwo = to!string(matchingObjects[2]);
+		}
+		if(!crls.isValidIPv4(DNSOne) && !crls.isValidIPv4(DNSTwo))
+		{
+			writeln("this dns is not valid");
+			return;
+		}
+
+		try
+		{
+			auto dnsCommandOne = "Test-Connection -ComputerName "~ DNSOne ~" -Count 4";
+			auto dnsCommandTwo = "Test-Connection -ComputerName "~ DNSTwo ~" -Count 4";
+			auto result = executeShellCommand(dnsCommandOne);
+			int exitCodeOne = to!int(result[0]);
+			string outputOne = result[1];
+			string ErrorOne = result[2];
+			if(exitCodeOne == 0)
+			{
+				auto resultTwo = executeShellCommand(dnsCommandTwo);
+				int exitCodeTwo = to!int(resultTwo[0]);
+				string outputTwo = resultTwo[1];
+				string ErrorTwo = resultTwo[2];
+				if(exitCodeTwo == 0)
+				{
+					writeln("ping : " , DNSname , " " , DNSOne , " " , DNSTwo);
+					writeln(outputOne);
+					writeln(outputTwo);
+				}else
+				{
+
+					writeln("Error : ");
+					writeln(ErrorTwo);
+				}
+				
+
+				
+			}else
+			{
+				writeln("Error : ");
+				writeln(ErrorOne);
+			}
+		}catch(Exception e )
+		{
+			writeln("ERROR executing command " , e.msg);
+		}
+		
+		
+
+		
+
+		
+				
+
 	 }
 	 
 
@@ -396,9 +485,88 @@ public class DNSManagerClass
 		
 	 }
 	 //check activ  DNS custom
-	 public void ChActiveDNSC()
+	  void ChActiveDNSC(string DNSname)
 	 {
-			
+		if(DNSname.empty)
+		{
+			writeln("Error : DNS name is empty");
+			return;
+		}
+
+		auto saveManager = new  SaveManagerClass();
+		auto crls = new CRLs();
+		auto crlsPing = new CRLsPing();
+		auto crlsJson = new CRLsWJson();
+		string DNSOne;
+		string DNSTwo;
+		bool IsValidInt = true;
+
+		auto JsonData = crlsJson.ReadJson(saveManager.fileName);
+
+		auto matchingObjects = JsonData.array
+			.filter!(f => f.type == JSONType.object &&
+					 "NameDNS" in f &&
+						 f["NameDNS"].str == DNSname)
+			.array;
+
+		if (matchingObjects.length == 0) {
+			writeln("No objects found with NameDNS: ", DNSname);
+			return;
+		}
+
+
+		if (matchingObjects.length >= 2)
+		{
+			DNSOne = JsonData.array[1]["NameDNS"].str;
+		}
+		if (matchingObjects.length >= 3)
+		{
+			DNSTwo = JsonData.array[1]["NameDNS"].str;
+		}
+		if(!crls.isValidIPv4(DNSOne) && !crls.isValidIPv4(DNSTwo))
+		{
+			writeln("this dns is not valid");
+			IsValidInt = false;
+			return;
+		}
+
+		string[] Commands;
+		if(IsValidInt)
+		{
+
+			 Commands ~= "Resolve-DnsName -Name google.com -Server "~ DNSOne ~" -Type A";
+			 Commands ~= "Test-Connection -ComputerName "~ DNSOne ~" -Quiet";
+
+			 Commands ~= "Resolve-DnsName -Name google.com -Server "~ DNSTwo ~" -Type A";
+			 Commands ~= "Test-Connection -ComputerName "~ DNSTwo ~" -Quiet";
+		}
+
+		foreach(cmd ; Commands)
+		{
+			try
+			{
+				auto result = executeShellCommand(cmd);
+				int exitcode = to!int(result[0]);
+				string output = result[1];
+				string error = result[2];
+				if(exitcode == 0)
+				{
+					writeln("Command executed successfully: ", cmd);
+					writeln("OutPut : ");
+					writeln(output);
+				}else
+				{
+					writeln("Error : ");
+					writeln(error);
+				}
+				
+
+			}catch(Exception e)
+			{
+				writeln("ERROR executing command" , e.msg);
+				return;
+			}
+		}
 	 }
 	
 	
