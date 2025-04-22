@@ -266,7 +266,7 @@ public class DNSManagerClass
 	//Ping DNS 
 	 public void PingDNS(string DNSname)
 	 {
-			auto crls = new CRLs;
+			auto crls = new CRLs();
 			
 			DNSname = DNSname.strip();
 
@@ -321,14 +321,79 @@ public class DNSManagerClass
 	 //ping dns Custom
 	 public void PingDNSC()
 	 {
-
+		
 	 }
 	 
 
 	 //Check activ DNS
 	 public void ChActivDNS(string DNSname)
 	 {
+		auto crls = new CRLs();
 
+		DNSname = DNSname.strip();
+
+		int CheckError = 0;
+
+		if(DNSname.empty)
+		{
+			writeln("Error : DNS name is empty");
+			CheckError = 0;
+			return;
+		}else 
+		{
+			CheckError++;
+		}
+		if(!crls.isValidIPv4(DNSname))
+		{
+			writeln("this dns is not valid ");
+			CheckError = 0;
+			return;
+		}else
+		{
+			CheckError++;
+		}
+
+		if(CheckError == 2)
+		{
+			try
+			{
+				auto dnsCommandforInformation = "Resolve-DnsName -Name google.com -Server "~ DNSname ~" -Type A";
+				auto dnsCommandforActive = "Test-Connection -ComputerName "~ DNSname ~" -Quiet";
+				auto resultOne = executeShellCommand(dnsCommandforInformation);
+				int exitCodeOne = to!int(resultOne[0]);
+				string outputOne = resultOne[1];
+				string errorOutputOne = resultOne[2];
+				if(exitCodeOne == 0)
+				{
+					auto resultTwo = executeShellCommand(dnsCommandforActive);
+					int exitCodeTwo = to!int(resultTwo[0]);
+					auto outputTwo = resultTwo[1];
+					string ErrorOutPutTwo = resultTwo[2];
+					if(exitCodeTwo == 0)
+					{
+						writeln("Active And information: ");
+						writeln("Active : " , outputTwo );
+						writeln("Information : ");
+						writeln(outputOne);
+					}else
+					{
+						writeln("Error : ");
+						writeln(ErrorOutPutTwo);
+					}
+				}else
+				{
+					writeln("Error : ");
+					writeln(errorOutputOne);
+				}
+
+
+			}catch(Exception e)
+			{
+				writeln("ERROR executing command" , e.msg);
+				return;
+			}
+		}
+		
 	 }
 	 //check activ  DNS custom
 	 public void ChActiveDNSC()
