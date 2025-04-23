@@ -103,6 +103,10 @@ public class ConsoleUIClass
 
         //---------------
 		
+      
+		writeln(GLVclass.tYELLOW, "This section allows you to ping DNS servers, check their activity status, and view details., you can type : ", GLVclass.tRESET,
+				GLVclass.tBRIGHT_BLUE , "pingMenu", GLVclass.tRESET);
+        //---------------		
 
         writeln(GLVclass.tYELLOW, "For exit, you can type this: ", GLVclass.tRESET,
 				GLVclass.tRED , "exit ", GLVclass.tRESET);

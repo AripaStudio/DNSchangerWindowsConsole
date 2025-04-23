@@ -74,8 +74,6 @@ bool isRunningAsAdmin()
 
 
 
-
-
 /*
 باید متد 
 Main 
@@ -87,11 +85,16 @@ Main
 
 int main()
 {   
-     auto dnsManager = new DNSManagerClass();
-     auto networkinterface = new NetworkInterfaceClass();
-	 auto consoleUI = new ConsoleUIClass();
-	 auto saveManager = new SaveManagerClass();
-	 auto crls = new CRLs();
+     
+	auto dnsManager = new DNSManagerClass();
+    auto networkinterface = new NetworkInterfaceClass();
+    auto consoleUI = new ConsoleUIClass();
+    auto saveManager = new SaveManagerClass();
+    auto crls = new CRLs();
+	auto crlsPing = new CRLsPing();
+
+	
+
 
 	 consoleUI.enableANSI();
 
@@ -281,9 +284,13 @@ int main()
 			}else if(inputStart == "setting")
 			{
 				crls.InterFaceSetting();
+			}else if(inputStart == "pingmenu")
+			{
+				crlsPing.PingMenu();
 			}else
 			{
 				consoleUI.printMessage("Please enter: (exit), (viewdns), (changedns), (deletedns), (showmydns), (setting) | Custom DNS section: (showallc), (showdnsinfoc), (adddnsc), (changednsc), (deletednsc)", "\033[31m");
+				consoleUI.printMessage("(pingMenu)" ,"\033[31m" );
 			}
 		}
 		

@@ -260,13 +260,13 @@ public class CRLsPing
                 PingDNSCustom();
 			}else if(inputUser == "chactive")
 			{
-
+                ChActiveANDinformation();
 			}else if(inputUser == "chactivec")
 			{
-
+                ChActiveANDinformationCustom();
 			}else if(inputUser == "return")
 			{
-			
+			    break;
 			}else
 			{
                 writeln(GLVclass.tRED , "plese Enter : (PingDNS) , (PingDNSC) , (ChActive) , (ChActiveC) For return : (return) "  , GLVclass.tRESET);
