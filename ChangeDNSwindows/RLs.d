@@ -3,6 +3,7 @@ module RLs;
 import std.stdio;
 import SaveMangaerInterface; 
 import GLV;
+import DNSManager;
 import core.sys.windows.windows;
 import std.string;
 import std.conv;
@@ -10,7 +11,7 @@ import ConsoleUI;
 import std.json; 
 import std.file; 
 import std.algorithm;
-import std.string; 
+
 
 class CRLs
 {
@@ -41,7 +42,7 @@ class CRLs
         else
         {
             writeln("Error : Input is empty");
-            return null;    
+            return "";    
         }
         
     }
@@ -60,7 +61,7 @@ class CRLs
         else
         {
             writeln("Error : Input is empty");
-            return null;    
+            return "";    
         }
 
     }
@@ -69,7 +70,7 @@ class CRLs
     {
         writeln("Current saved interfaces:");
         InterfaceManager.ShowAll();
-        return null;
+        return "";
     }
 
 
@@ -87,7 +88,7 @@ class CRLs
         else
         {
             writeln("Error : Input is empty");
-            return null;    
+            return "";    
         }
     }
 
@@ -169,7 +170,82 @@ class CRLs
 }
 
 public class CRLsPing
-{
+{   
+	private DNSManagerClass  dnsManager;
+    private CRLs rls;
+    void PingDNS()
+	{
+        writeln("Please enter the desired DNS to ping:");
+        string DNSname = readln().strip();
+
+        if(DNSname.empty)
+		{
+            writeln("Error , Input : empty");
+            return;
+		}
+        
+        dnsManager.PingDNS(DNSname);
+		writeln("The operation was successful.");
+        
+		
+	}
+
+    void PingDNSCustom()
+	{
+        writeln("Please enter your DNS name (the DNS name you saved in your list) to ping.");
+        string DNSname = readln().strip();
+        if(DNSname.empty)
+		{
+            writeln("Error , input : emtpy");
+            return;
+		}
+
+        dnsManager.PingDNSC(DNSname);
+        writeln("The operation was successful.");
+	}
+
+    void ChActiveANDinformation()
+	{
+        writeln("Please enter the desired DNS to see if it is active and the information.");
+        string DNSname = readln().strip();
+        if(DNSname.empty)
+		{
+            writeln("input is empty(ERROR)");
+            return;
+		}
+        dnsManager.ChActivDNS(DNSname);
+        writeln("The operation was successful.");
+	}
+
+    void ChActiveANDinformationCustom()
+	{
+        string DNSname = readln().strip();
+        if(DNSname.empty)
+		{
+            writeln("input is empty(ERROR)");
+            return;
+		}
+
+        dnsManager.ChActiveDNSC(DNSname);
+        writeln("The operation was successful.");
+
+	}
+
+    void PingMenu()
+	{
+        private ConsoleUIClass consoleUI;
+
+        while(true)
+		{
+            writeln(GLVclass.tGREEN , "Welecome" , GLVclass.tRESET);
+
+		}
+	}
+
+
+
+    
+
     
 }
 
