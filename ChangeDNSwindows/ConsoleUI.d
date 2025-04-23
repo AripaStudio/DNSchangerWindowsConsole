@@ -158,5 +158,15 @@ public class ConsoleUIClass
         writeln(GLVclass.tYELLOW, "To return to the main menu, type: ", GLVclass.tBRIGHT_BLUE, "return", GLVclass.tRESET);
 	}
 
+    void HelpPingMenu()
+	{
+		writeln(GLVclass.tCYAN, "DNS Management Menu", GLVclass.tRESET);
+		writeln(GLVclass.tYELLOW, "To ping a specific DNS, type: ", GLVclass.tBRIGHT_BLUE, "PingDNS", GLVclass.tRESET);
+		writeln(GLVclass.tYELLOW, "To ping saved custom DNSs, type: ", GLVclass.tBRIGHT_BLUE, "PingDNSC", GLVclass.tRESET);
+		writeln(GLVclass.tYELLOW, "To check details and activity of a specific DNS, type: ", GLVclass.tBRIGHT_BLUE, "ChActive", GLVclass.tRESET);
+		writeln(GLVclass.tYELLOW, "To check details and activity of saved custom DNSs, type: ", GLVclass.tBRIGHT_BLUE, "ChActiveC", GLVclass.tRESET);
+		writeln(GLVclass.tYELLOW, "To return to the main menu, type: ", GLVclass.tBRIGHT_BLUE, "return", GLVclass.tRESET);
+	}
+
 
 }

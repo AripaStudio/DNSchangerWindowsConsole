@@ -171,8 +171,19 @@ class CRLs
 
 public class CRLsPing
 {   
-	private DNSManagerClass  dnsManager;
-    private CRLs rls;
+    
+		private DNSManagerClass dnsManager;
+		private CRLs rls;
+        private ConsoleUIClass consoleUI;
+	
+
+    this()
+	{
+        rls = new CRLs();
+        dnsManager = new DNSManagerClass();
+        consoleUI = new ConsoleUIClass();
+	}
+	
     void PingDNS()
 	{
         writeln("Please enter the desired DNS to ping:");
@@ -219,6 +230,7 @@ public class CRLsPing
 
     void ChActiveANDinformationCustom()
 	{
+        writeln("Please enter your DNS name (the DNS name you saved in your list) to Check Active and Information");
         string DNSname = readln().strip();
         if(DNSname.empty)
 		{
@@ -233,12 +245,32 @@ public class CRLsPing
 
     void PingMenu()
 	{
-        private ConsoleUIClass consoleUI;
+        
+        consoleUI.HelpPingMenu();
 
         while(true)
 		{
-            writeln(GLVclass.tGREEN , "Welecome" , GLVclass.tRESET);
+            writeln(GLVclass.tGREEN , "Type:" , GLVclass.tRESET);            
+            string inputUser = readln().strip().toLower();
+            if(inputUser == "pingdns")
+			{
+                PingDNS();
+			}else if(inputUser == "pingdnsc")
+			{
+                PingDNSCustom();
+			}else if(inputUser == "chactive")
+			{
 
+			}else if(inputUser == "chactivec")
+			{
+
+			}else if(inputUser == "return")
+			{
+			
+			}else
+			{
+                writeln(GLVclass.tRED , "plese Enter : (PingDNS) , (PingDNSC) , (ChActive) , (ChActiveC) For return : (return) "  , GLVclass.tRESET);
+			}
 		}
 	}
 

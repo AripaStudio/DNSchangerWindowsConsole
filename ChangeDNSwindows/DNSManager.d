@@ -28,6 +28,14 @@ public class DNSManagerClass
 {
 
 	
+		private CRLs crls;
+			
+	
+
+	this()
+	{
+		crls = new CRLs();
+	}
 
 	//ANSI Colors
 	enum tRESET = "\033[0m";
@@ -265,7 +273,7 @@ public class DNSManagerClass
         }
 	}
 
-
+	
 
 
 
@@ -282,8 +290,8 @@ public class DNSManagerClass
 
 	//Ping DNS 
 	 public void PingDNS(string DNSname)
-	 {
-			auto crls = new CRLs();
+	 {			
+			
 			
 			DNSname = DNSname.strip();
 
