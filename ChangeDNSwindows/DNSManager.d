@@ -70,13 +70,23 @@ public class DNSManagerClass
 
 	string[] executeShellCommand(string command)
 	{
-		//auto pipes = pipeShell(command, Redirect.stdout | Redirect.stderr);
+		auto pipes = pipeShell(command, Redirect.stdout | Redirect.stderr);		
+		string output = pipes.stdout.byLine.map!(line => line.idup).join("\n");
+		string errorOutput = pipes.stderr.byLine.map!(line => line.idup).join("\n");
+		int exitCode = pipes.pid.wait();
+		return [to!string(exitCode), output, errorOutput];
+	}
+
+	string[] executeShellCommandPowerShell(string command)
+	{
+		
 		auto pipes = pipeShell(`powershell -Command "` ~ command ~ `"`, Redirect.stdout | Redirect.stderr);
 		string output = pipes.stdout.byLine.map!(line => line.idup).join("\n");
 		string errorOutput = pipes.stderr.byLine.map!(line => line.idup).join("\n");
 		int exitCode = pipes.pid.wait();
 		return [to!string(exitCode), output, errorOutput];
 	}
+
 
 	public void selectDNS(string dnsName)
     {
@@ -322,7 +332,7 @@ public class DNSManagerClass
 				{
 
 					auto dnsCommand = "Test-Connection -ComputerName "~ DNSname ~" -Count 4";
-					auto result = executeShellCommand(dnsCommand);
+					auto result = executeShellCommandPowerShell(dnsCommand);
 					int exitCode = to!int(result[0]);
 					string output = result[1];
 					string errorOutput = result[2];
@@ -394,13 +404,13 @@ public class DNSManagerClass
 		{
 			auto dnsCommandOne = "Test-Connection -ComputerName "~ DNSOne ~" -Count 4";
 			auto dnsCommandTwo = "Test-Connection -ComputerName "~ DNSTwo ~" -Count 4";
-			auto result = executeShellCommand(dnsCommandOne);
+			auto result = executeShellCommandPowerShell(dnsCommandOne);
 			int exitCodeOne = to!int(result[0]);
 			string outputOne = result[1];
 			string ErrorOne = result[2];
 			if(exitCodeOne == 0)
 			{
-				auto resultTwo = executeShellCommand(dnsCommandTwo);
+				auto resultTwo = executeShellCommandPowerShell(dnsCommandTwo);
 				int exitCodeTwo = to!int(resultTwo[0]);
 				string outputTwo = resultTwo[1];
 				string ErrorTwo = resultTwo[2];
@@ -472,13 +482,13 @@ public class DNSManagerClass
 			{
 				auto dnsCommandforInformation = "Resolve-DnsName -Name google.com -Server "~ DNSname ~" -Type A";
 				auto dnsCommandforActive = "Test-Connection -ComputerName "~ DNSname ~" -Quiet";
-				auto resultOne = executeShellCommand(dnsCommandforInformation);
+				auto resultOne = executeShellCommandPowerShell(dnsCommandforInformation);
 				int exitCodeOne = to!int(resultOne[0]);
 				string outputOne = resultOne[1];
 				string errorOutputOne = resultOne[2];
 				if(exitCodeOne == 0)
 				{
-					auto resultTwo = executeShellCommand(dnsCommandforActive);
+					auto resultTwo = executeShellCommandPowerShell(dnsCommandforActive);
 					int exitCodeTwo = to!int(resultTwo[0]);
 					auto outputTwo = resultTwo[1];
 					string ErrorOutPutTwo = resultTwo[2];
@@ -569,7 +579,7 @@ public class DNSManagerClass
 		{
 			try
 			{
-				auto result = executeShellCommand(cmd);
+				auto result = executeShellCommandPowerShell(cmd);
 				int exitcode = to!int(result[0]);
 				string output = result[1];
 				string error = result[2];
