@@ -98,7 +98,7 @@ int main()
 
 	 consoleUI.enableANSI();
 
-	 consoleUI.showHelp();
+	
 
 
     if (!isRunningAsAdmin())
@@ -110,7 +110,7 @@ int main()
         return 1; 
     }else
 	{
-		 
+		  consoleUI.showHelp();
 		while(true)
 		{
 			string inputStart = strip(readln()).toLower();

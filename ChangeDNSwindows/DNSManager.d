@@ -70,7 +70,8 @@ public class DNSManagerClass
 
 	string[] executeShellCommand(string command)
 	{
-		auto pipes = pipeShell(command, Redirect.stdout | Redirect.stderr);
+		//auto pipes = pipeShell(command, Redirect.stdout | Redirect.stderr);
+		auto pipes = pipeShell(`powershell -Command "` ~ command ~ `"`, Redirect.stdout | Redirect.stderr);
 		string output = pipes.stdout.byLine.map!(line => line.idup).join("\n");
 		string errorOutput = pipes.stderr.byLine.map!(line => line.idup).join("\n");
 		int exitCode = pipes.pid.wait();

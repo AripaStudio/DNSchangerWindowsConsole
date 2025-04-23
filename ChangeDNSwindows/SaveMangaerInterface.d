@@ -66,7 +66,7 @@ public class SaveMangerInterFaceClass
 				JSONValue json = parseJSON(JsonString);
 				if(json.type != JSONType.object)
 				{
-					writeln(GLVclass.tRED, "Error: JSON root is not an object!", GLVclass.tRESET);
+					//writeln(GLVclass.tRED, "Error: JSON root is not an object!", GLVclass.tRESET);
                     ManagerData = [];
                     selectedInterface = null;
                     return;
