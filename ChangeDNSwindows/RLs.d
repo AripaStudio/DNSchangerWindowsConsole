@@ -285,11 +285,11 @@ public class CRLsWJson
 {
     public JSONValue ReadJson(string fileName)
 	{
-        JSONValue empty ;
+        JSONValue empty = null;
         if(fileName.empty)
 		{
             writeln("error fileName is empty");
-            return empty ;
+            return empty;
 		}      
         string jsonContent;
         try

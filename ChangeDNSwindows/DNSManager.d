@@ -373,12 +373,17 @@ public class DNSManagerClass
 		string DNSOne;
 		string DNSTwo;
 
-		DNSOne = DNSOne.strip();
-		DNSTwo = DNSTwo.strip();
+		
 
 
 		auto JsonData = crlsJson.ReadJson(saveManager.fileName);
-		
+
+		if(JsonData.type != JSONType.array)
+		{
+			writeln("Error: JSON data is not an array");
+			return;
+		}
+
 		auto matchingObjects = JsonData.array
 			.filter!(f => f.type == JSONType.object &&
 					 "NameDNS" in f &&
@@ -390,19 +395,45 @@ public class DNSManagerClass
 			writeln("No objects found with NameDNS: ", DNSname);
 			return;
 		}
+		
+		auto firstObject = matchingObjects[0];
+
+		if ("OneDNS" in firstObject && "TwoDNS" in firstObject)
+		{
+			try
+			{
+				DNSOne = firstObject["DNSOne"].str;
+				DNSTwo = firstObject["DNSTwo"].str;
+			}catch(Exception e)
+			{
+				writeln("Error : " , e.msg);
+			}
+		}
+		else
+		{
+			writeln("Error: DNSOne or DNSTwo not found in JSON object");
+			return;
+		}
+	
+		bool CheckDNSone = !DNSOne.empty && crls.isValidIPv4(DNSOne);
+		bool CheckDNStwo = !DNSTwo.empty && crls.isValidIPv4(DNSTwo);
 
 		
-		if (matchingObjects.length >= 2)
-		{
-			DNSOne = to!string(matchingObjects[1]); 
-		}
-		if (matchingObjects.length >= 3)
-		{
-			DNSTwo = to!string(matchingObjects[2]);
-		}
-		if(!crls.isValidIPv4(DNSOne) && !crls.isValidIPv4(DNSTwo))
+		//if (matchingObjects.length >= 2)
+		//{
+		//    DNSOne = to!string(matchingObjects[1]); 
+		//}
+		//if (matchingObjects.length >= 3)
+		//{
+		//    DNSTwo = to!string(matchingObjects[2]);
+		//}
+
+
+		if(!CheckDNSone && !CheckDNStwo)
 		{
 			writeln("this dns is not valid");
+			writeln("DNS ONE :" , DNSOne);
+			writeln("DNS Two :" , DNSTwo);
 			return;
 		}
 
@@ -557,7 +588,8 @@ public class DNSManagerClass
 			writeln("No objects found with NameDNS: ", DNSname);
 			return;
 		}
-
+		bool CheckDNSone = crls.isValidIPv4(DNSOne);
+		bool CheckDNStwo = crls.isValidIPv4(DNSTwo);
 
 		if (matchingObjects.length >= 2)
 		{
@@ -567,7 +599,7 @@ public class DNSManagerClass
 		{
 			DNSTwo = JsonData.array[1]["NameDNS"].str;
 		}
-		if(!crls.isValidIPv4(DNSOne) && !crls.isValidIPv4(DNSTwo))
+		if(!CheckDNSone && !CheckDNStwo)
 		{
 			writeln("this dns is not valid");
 			writeln("DNS ONE :" , DNSOne);
