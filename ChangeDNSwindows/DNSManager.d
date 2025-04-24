@@ -299,6 +299,9 @@ public class DNSManagerClass
 	//------------------------------------------------------------------------
 	//------------------------------------------------------------------------
 
+	//دارای مشکل :
+
+
 	//Ping DNS 
 	 public void PingDNS(string DNSname)
 	 {			
@@ -447,7 +450,7 @@ public class DNSManagerClass
 
 	 }
 	 
-
+		
 	 //Check activ DNS
 	 public void ChActivDNS(string DNSname)
 	 {
