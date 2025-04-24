@@ -20,8 +20,9 @@ import GLV;
 import RLs;
 
 //Aripa Studio 
-//V1.5.0
-//khashayar mobasheri
+//V1.5.1
+//khashayar mobasheri(Abolfazl);
+
 
 
 
@@ -79,6 +80,8 @@ bool isRunningAsAdmin()
 Main 
 رو تمیز کنم خیلی کثیفه
 :)
+:) کم کم دارم تمیز میکنم :)
+
 */
 	
 

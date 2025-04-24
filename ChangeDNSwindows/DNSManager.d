@@ -6,6 +6,7 @@ import std.string;
 import std.format;
 import std.conv;
 import std.array;
+import GLV;
 import RLs;
 import SaveManager;
 import std.algorithm;
@@ -299,7 +300,7 @@ public class DNSManagerClass
 	//------------------------------------------------------------------------
 	//------------------------------------------------------------------------
 
-	//دارای مشکل :
+	
 
 
 	//Ping DNS 
@@ -402,8 +403,8 @@ public class DNSManagerClass
 		{
 			try
 			{
-				DNSOne = firstObject["DNSOne"].str;
-				DNSTwo = firstObject["DNSTwo"].str;
+				DNSOne = firstObject["OneDNS"].str;
+				DNSTwo = firstObject["TwoDNS"].str;
 			}catch(Exception e)
 			{
 				writeln("Error : " , e.msg);
@@ -418,15 +419,7 @@ public class DNSManagerClass
 		bool CheckDNSone = !DNSOne.empty && crls.isValidIPv4(DNSOne);
 		bool CheckDNStwo = !DNSTwo.empty && crls.isValidIPv4(DNSTwo);
 
-		
-		//if (matchingObjects.length >= 2)
-		//{
-		//    DNSOne = to!string(matchingObjects[1]); 
-		//}
-		//if (matchingObjects.length >= 3)
-		//{
-		//    DNSTwo = to!string(matchingObjects[2]);
-		//}
+	
 
 
 		if(!CheckDNSone && !CheckDNStwo)
@@ -532,7 +525,7 @@ public class DNSManagerClass
 					if(exitCodeTwo == 0)
 					{
 						writeln("Active And information: ");
-						writeln("Active : " , outputTwo );
+						writeln(GLVclass.tGREEN , "Active : " , outputTwo , GLVclass.tRESET);
 						writeln("Information : ");
 						writeln(outputOne);
 					}else
@@ -578,6 +571,12 @@ public class DNSManagerClass
 
 		auto JsonData = crlsJson.ReadJson(saveManager.fileName);
 
+		if(JsonData.type != JSONType.array)
+		{
+			writeln("Error: JSON data is not an array");
+			return;
+		}
+
 		auto matchingObjects = JsonData.array
 			.filter!(f => f.type == JSONType.object &&
 					 "NameDNS" in f &&
@@ -588,17 +587,28 @@ public class DNSManagerClass
 			writeln("No objects found with NameDNS: ", DNSname);
 			return;
 		}
+
+		auto firstObject = matchingObjects[0];
+		if ("OneDNS" in firstObject && "TwoDNS" in firstObject)
+		{
+			try
+			{
+				DNSOne = firstObject["OneDNS"].str;
+				DNSTwo = firstObject["TwoDNS"].str;
+			}catch(Exception e)
+			{
+				writeln("Error : " , e.msg);
+			}
+		}
+		else
+		{
+			writeln("Error: DNSOne or DNSTwo not found in JSON object");
+			return;
+		}
+
+
 		bool CheckDNSone = crls.isValidIPv4(DNSOne);
 		bool CheckDNStwo = crls.isValidIPv4(DNSTwo);
-
-		if (matchingObjects.length >= 2)
-		{
-			DNSOne = JsonData.array[1]["NameDNS"].str;
-		}
-		if (matchingObjects.length >= 3)
-		{
-			DNSTwo = JsonData.array[1]["NameDNS"].str;
-		}
 		if(!CheckDNSone && !CheckDNStwo)
 		{
 			writeln("this dns is not valid");
@@ -631,7 +641,7 @@ public class DNSManagerClass
 				{
 					writeln("Command executed successfully: ", cmd);
 					writeln("OutPut : ");
-					writeln(output);
+					writeln(GLVclass.tGREEN , output , GLVclass.tRESET);
 				}else
 				{
 					writeln("Error : ");
