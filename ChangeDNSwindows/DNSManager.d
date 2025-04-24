@@ -373,6 +373,9 @@ public class DNSManagerClass
 		string DNSOne;
 		string DNSTwo;
 
+		DNSOne = DNSOne.strip();
+		DNSTwo = DNSTwo.strip();
+
 
 		auto JsonData = crlsJson.ReadJson(saveManager.fileName);
 		
@@ -536,6 +539,10 @@ public class DNSManagerClass
 		auto crlsJson = new CRLsWJson();
 		string DNSOne;
 		string DNSTwo;
+
+		DNSOne = DNSOne.strip();
+		DNSTwo = DNSTwo.strip();
+
 		bool IsValidInt = true;
 
 		auto JsonData = crlsJson.ReadJson(saveManager.fileName);
@@ -563,6 +570,8 @@ public class DNSManagerClass
 		if(!crls.isValidIPv4(DNSOne) && !crls.isValidIPv4(DNSTwo))
 		{
 			writeln("this dns is not valid");
+			writeln("DNS ONE :" , DNSOne);
+			writeln("DNS Two :" , DNSTwo);
 			IsValidInt = false;
 			return;
 		}
