@@ -117,18 +117,9 @@ public class DNSManagerClass
                 selectedDNSServer = DNSServer.none;
                 selectedDNS = null;
                 break;
-        }
-		GetDNS_in_GLV(selectedDNS);
+        }		
     }
-
-	 void GetDNS_in_GLV(string[] inputDNS)
-	{
-		if(inputDNS !is null && !inputDNS.empty)
-		{
-			GLVclass.OneDNS = inputDNS[0];
-			GLVclass.TwoDNS = inputDNS[1];
-		}
-	}
+	 
 	
 
      void changeDNS(string interfaceName)
@@ -238,6 +229,7 @@ public class DNSManagerClass
 
 	}
 
+	//show DNS: 
 	public void showDNS()
     {
         auto result = executeShellCommand(`powershell -ExecutionPolicy Bypass -Command "Get-DnsClientServerAddress | Select-Object -ExpandProperty ServerAddresses"`);
@@ -315,7 +307,7 @@ public class DNSManagerClass
 
 
 	//Ping DNS 
-	 public void PingDNS(string DNSname)
+	 void PingDNS(string DNSname)
 	 {			
 			
 			
@@ -490,7 +482,65 @@ public class DNSManagerClass
 	 // Ping my dns:
 	 void PingMyDNS()
 	 {
+		string[] Currentdns = CurrentDNS();
+		if(Currentdns !is null && Currentdns.length == 2)
+		{
+			PingDNS(Currentdns);
+		}else
+		{
+			writeln(GLVclass.tRED , " Error , DNS in empty!" , GLVclass.tRESET);
+			return;
+		}
+		
+	 }
 
+	 string[] CurrentDNS()
+	 {
+		try
+		{
+			auto result = executeShellCommand(`powershell -ExecutionPolicy Bypass -Command "Get-DnsClientServerAddress | Select-Object -ExpandProperty ServerAddresses"`);
+
+			var rls = new CRLs();
+
+			int exitCode = to!int(result[0]);
+			string output = result[1];
+			string errorOutput = result[2];
+
+			if (exitCode == 0 && !output.empty)
+			{
+				writeln("DNS Servers:");
+				writeln(output);
+
+
+				auto dnsServers = output
+					.splitLines
+					.filter!(line => !line.strip.empty)
+					.filter!(line => !line.canFind(":"))
+					.array;
+
+				if(!rls.isValidIPv4(dnsServers[0]))
+				{
+					//for Debug:
+					writeln("DNS not Valid" , dnsServers);
+					return null;
+				}
+
+				//return CurrentDNS:
+				return dnsServers;
+
+
+			} else
+			{
+				writeln("Error executing command:");
+				writeln(errorOutput);
+				return null;
+			}
+
+		}catch(Exception e)
+		{
+			writeln("Error in Save CurrentDNS? : " , e.msg);
+			return null;
+		}
 	 }
 
 

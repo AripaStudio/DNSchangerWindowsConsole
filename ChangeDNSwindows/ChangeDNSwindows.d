@@ -189,9 +189,7 @@ int main()
 							consoleUI.printMessage("Error: Interface " ~ interfaceName ~ " is not connected.", "\033[31m");
 							shouldContinue = false;
 							break;
-						}
-						GLVclass.OneDNS = OneDNS;
-						GLVclass.TwoDNS = TwoDNS;
+						}						
 						dnsManager.ChangeDNScustom(interfaceName, OneDNS, TwoDNS);
 						break;
 					}

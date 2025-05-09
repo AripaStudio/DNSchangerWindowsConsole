@@ -16,9 +16,7 @@ class  GLVclass
     public static enum tWHITE = "\033[37m";
 
 
-    //For Save DNS:
-    public static string OneDNS = "";
-    public static string TwoDNS = "";
+   
 
 
     
