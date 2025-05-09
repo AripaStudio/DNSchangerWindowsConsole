@@ -501,7 +501,7 @@ public class DNSManagerClass
 					ErrorManager = false;
 				}catch(Exception e)
 				{
-					string err = ("Error in Run PingDNS " , "(DNS server :) " , OneDNS , "Error : "  , e.msg);					
+					string err = text("Error in Run PingDNS " , "(DNS server :) " , OneDNS , "Error : "  , e.msg);					
 					ErrorManager = true;
 					ErrorManagerMessage += [err];
 				}
@@ -511,7 +511,7 @@ public class DNSManagerClass
 					ErrorManager = false;
 				}catch(Exception e )
 				{
-					string err = ("Error in Run PingDNS " , "(DNS server :) " , TwoDNS , "Error : "  , e.msg);					
+					string err = text("Error in Run PingDNS " , "(DNS server :) " , TwoDNS , "Error : "  , e.msg);					
 					ErrorManager = true;
 					ErrorManagerMessage += [err];
 				}
@@ -524,21 +524,21 @@ public class DNSManagerClass
 					ErrorManager = false;
 				}catch(Exception e)
 				{
-					string err = ("Error in Run PingDNS " , "(DNS server :) " , OneDNS , "Error : "  , e.msg);
+					string err = text("Error in Run PingDNS " , "(DNS server :) " , OneDNS , "Error : "  , e.msg);
 					ErrorManager = true;
 					ErrorManagerMessage += [err];
 
 				}
 			}else
 			{
-				string err = ("DNS not Valid ");
+				string err = text("DNS not Valid ");
 				ErrorManager = true;
 				ErrorManagerMessage += [err];
 			}
 			
 		}else
 		{
-			string err = (GLVclass.tRED , " Error , DNS in empty!" , GLVclass.tRESET);
+			string err = text(GLVclass.tRED , " Error , DNS in empty!" , GLVclass.tRESET);
 			ErrorManager = true;
 			ErrorManagerMessage += [err];
 		}
