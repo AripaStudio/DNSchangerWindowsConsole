@@ -476,7 +476,13 @@ public class DNSManagerClass
 				
 
 	 }
-	 
+	 // Ping my dns:
+	 void PingMyDNS()
+	 {
+
+	 }
+
+
 		
 	 //Check activ DNS
 	 public void ChActivDNS(string DNSname)
