@@ -488,7 +488,7 @@ public class DNSManagerClass
 		if(Currentdns !is null)
 		{
 						
-			if(!Currentdns > 2 && !Currentdns < 1)
+			if(Currentdns.length >= 2)
 			{
 				OneDNS = Currentdns[0];		
 				TwoDNS = Currentdns[1];
@@ -498,6 +498,7 @@ public class DNSManagerClass
 				}catch(Exception e)
 				{
 					writeln("Error in Run PingDNS " , "(DNS server :) " , OneDNS , "Error : "  , e.msg);
+					return;
 				}
  				try
 				{
@@ -505,6 +506,19 @@ public class DNSManagerClass
 				}catch(Exception e )
 				{
 					writeln("Error in Run PingDNS " , "(DNS server :) " , TwoDNS , "Error : "  , e.msg);
+					return;
+				}
+			}			
+			if(Currentdns.length == 1)
+			{
+				OneDNS = Currentdns[0];		
+				try
+				{
+					PingDNS(OneDNS);					
+				}catch(Exception e)
+				{
+					writeln("Error in Run PingDNS " , "(DNS server :) " , OneDNS , "Error : "  , e.msg);
+					return;
 				}
 			}
 		}else
