@@ -190,6 +190,8 @@ int main()
 							shouldContinue = false;
 							break;
 						}
+						GLVclass.OneDNS = OneDNS;
+						GLVclass.TwoDNS = TwoDNS;
 						dnsManager.ChangeDNScustom(interfaceName, OneDNS, TwoDNS);
 						break;
 					}
@@ -236,7 +238,7 @@ int main()
 						dnsManager.selectDNS(dnsName);
 
 						if(dnsManager.getSelectedDNSServer() != DNSServer.none)
-						{
+						{							
 							dnsManager.changeDNS(interfaceName);
 
 						}else

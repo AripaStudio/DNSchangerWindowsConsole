@@ -89,13 +89,13 @@ public class DNSManagerClass
 	}
 
 
-	public void selectDNS(string dnsName)
+	 void selectDNS(string dnsName)
     {
         switch (dnsName.toLower())
         {
             case "shecan":
                 selectedDNSServer = DNSServer.shecan;
-                selectedDNS = DnsSHecan;
+                selectedDNS = DnsSHecan;				
                 break;
             case "google":
                 selectedDNSServer = DNSServer.google;
@@ -118,9 +118,20 @@ public class DNSManagerClass
                 selectedDNS = null;
                 break;
         }
+		GetDNS_in_GLV(selectedDNS);
     }
 
-    public void changeDNS(string interfaceName)
+	 void GetDNS_in_GLV(string[] inputDNS)
+	{
+		if(inputDNS !is null && !inputDNS.empty)
+		{
+			GLVclass.OneDNS = inputDNS[0];
+			GLVclass.TwoDNS = inputDNS[1];
+		}
+	}
+	
+
+     void changeDNS(string interfaceName)
     {
         if (selectedDNSServer == DNSServer.none || selectedDNS is null)
         {
