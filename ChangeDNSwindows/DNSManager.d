@@ -483,9 +483,30 @@ public class DNSManagerClass
 	 void PingMyDNS()
 	 {
 		string[] Currentdns = CurrentDNS();
-		if(Currentdns !is null && Currentdns.length == 2)
+		string OneDNS;
+		string TwoDNS;
+		if(Currentdns !is null)
 		{
-			PingDNS(Currentdns);
+						
+			if(!Currentdns > 2 && !Currentdns < 1)
+			{
+				OneDNS = Currentdns[0];		
+				TwoDNS = Currentdns[1];
+				try
+				{
+					PingDNS(OneDNS);					
+				}catch(Exception e)
+				{
+					writeln("Error in Run PingDNS " , "(DNS server :) " , OneDNS , "Error : "  , e.msg);
+				}
+ 				try
+				{
+					PingDNS(TwoDNS);
+				}catch(Exception e )
+				{
+					writeln("Error in Run PingDNS " , "(DNS server :) " , TwoDNS , "Error : "  , e.msg);
+				}
+			}
 		}else
 		{
 			writeln(GLVclass.tRED , " Error , DNS in empty!" , GLVclass.tRESET);
