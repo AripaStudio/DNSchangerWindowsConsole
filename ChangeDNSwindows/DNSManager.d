@@ -508,8 +508,7 @@ public class DNSManagerClass
 					writeln("Error in Run PingDNS " , "(DNS server :) " , TwoDNS , "Error : "  , e.msg);
 					return;
 				}
-			}			
-			if(Currentdns.length == 1)
+			}else if(Currentdns.length == 1)
 			{
 				OneDNS = Currentdns[0];		
 				try
@@ -520,7 +519,12 @@ public class DNSManagerClass
 					writeln("Error in Run PingDNS " , "(DNS server :) " , OneDNS , "Error : "  , e.msg);
 					return;
 				}
+			}else
+			{
+				writeln("DNS not Valid ");
+				return;
 			}
+			
 		}else
 		{
 			writeln(GLVclass.tRED , " Error , DNS in empty!" , GLVclass.tRESET);
@@ -553,11 +557,17 @@ public class DNSManagerClass
 					.filter!(line => !line.canFind(":"))
 					.array;
 
-				if(!rls.isValidIPv4(dnsServers[0]))
-				{
-					//for Debug:
-					writeln("DNS not Valid" , dnsServers);
+				if (dnsServers.length == 0) {
+					writeln("No valid IPv4 DNS found.");
 					return null;
+				}
+
+				//check Is Valid DNS:
+				foreach(d; dnsServers) {
+					if(!rls.isValidIPv4(d)) {
+						writeln("DNS not Valid: ", d);
+						return null;
+					}
 				}
 
 				//return CurrentDNS:
