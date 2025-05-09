@@ -201,6 +201,15 @@ public class CRLsPing
 		
 	}
 
+    //نوشتن و استفاده از 
+    //pingMydns
+    // و اپدیت جدید 
+    //1.6.0
+    void PingMyDNS()
+	{
+
+	}
+
     void PingDNSCustom()
 	{
         writeln("Please enter your DNS name (the DNS name you saved in your list) to ping.");
