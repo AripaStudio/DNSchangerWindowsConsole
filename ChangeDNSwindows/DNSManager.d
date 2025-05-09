@@ -485,6 +485,8 @@ public class DNSManagerClass
 		string[] Currentdns = CurrentDNS();
 		string OneDNS;
 		string TwoDNS;
+		bool ErrorManager = false;
+		string[] ErrorManagerMessage;
 		if(Currentdns !is null)
 		{
 						
@@ -492,21 +494,26 @@ public class DNSManagerClass
 			{
 				OneDNS = Currentdns[0];		
 				TwoDNS = Currentdns[1];
+				ErrorManager = false;
 				try
 				{
-					PingDNS(OneDNS);					
+					PingDNS(OneDNS);										
+					ErrorManager = false;
 				}catch(Exception e)
 				{
-					writeln("Error in Run PingDNS " , "(DNS server :) " , OneDNS , "Error : "  , e.msg);
-					return;
+					string err = ("Error in Run PingDNS " , "(DNS server :) " , OneDNS , "Error : "  , e.msg);					
+					ErrorManager = true;
+					ErrorManagerMessage += [err];
 				}
  				try
 				{
 					PingDNS(TwoDNS);
+					ErrorManager = false;
 				}catch(Exception e )
 				{
-					writeln("Error in Run PingDNS " , "(DNS server :) " , TwoDNS , "Error : "  , e.msg);
-					return;
+					string err = ("Error in Run PingDNS " , "(DNS server :) " , TwoDNS , "Error : "  , e.msg);					
+					ErrorManager = true;
+					ErrorManagerMessage += [err];
 				}
 			}else if(Currentdns.length == 1)
 			{
@@ -514,21 +521,35 @@ public class DNSManagerClass
 				try
 				{
 					PingDNS(OneDNS);					
+					ErrorManager = false;
 				}catch(Exception e)
 				{
-					writeln("Error in Run PingDNS " , "(DNS server :) " , OneDNS , "Error : "  , e.msg);
-					return;
+					string err = ("Error in Run PingDNS " , "(DNS server :) " , OneDNS , "Error : "  , e.msg);
+					ErrorManager = true;
+					ErrorManagerMessage += [err];
+
 				}
 			}else
 			{
-				writeln("DNS not Valid ");
-				return;
+				string err = ("DNS not Valid ");
+				ErrorManager = true;
+				ErrorManagerMessage += [err];
 			}
 			
 		}else
 		{
-			writeln(GLVclass.tRED , " Error , DNS in empty!" , GLVclass.tRESET);
-			return;
+			string err = (GLVclass.tRED , " Error , DNS in empty!" , GLVclass.tRESET);
+			ErrorManager = true;
+			ErrorManagerMessage += [err];
+		}
+
+		if(ErrorManager)
+		{
+			foreach(e;ErrorManagerMessage)
+			{
+				writeln(GLVclass.tRED , "Errors : "  , GLVclass.tRESET);
+				writeln(e);
+			}
 		}
 		
 	 }
