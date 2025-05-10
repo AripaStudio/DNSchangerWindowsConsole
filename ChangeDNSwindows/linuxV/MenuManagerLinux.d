@@ -1,2 +1,7 @@
-module ChangeDNSwindows.linuxV.MenuManagerLinux;
+module linuxV.MenuManagerLinux;
 
+
+class CL_Linux_MenuManager
+{
+
+}

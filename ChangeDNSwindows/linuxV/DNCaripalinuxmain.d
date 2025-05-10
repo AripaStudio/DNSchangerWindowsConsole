@@ -1,2 +1,6 @@
-module ChangeDNSwindows.linuxV.DNCaripalinuxmain;
+module linuxV.DNCaripalinuxmain;
 
+class CL_Linux_DNCaripaMainPage
+{
+    
+}
