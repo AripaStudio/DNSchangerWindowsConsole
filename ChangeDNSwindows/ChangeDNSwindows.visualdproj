@@ -505,7 +505,6 @@
   <filesToClean>*.obj;*.cmd;*.build;*.json;*.dep;*.tlog</filesToClean>
  </Config>
  <Folder name="ChangeDNSwindows">
-  <Folder name="LinuxCode" />
   <File path="ChangeDNSwindows.d" />
   <File path="ConsoleUI.d" />
   <File path="DNSManager.d" />
