@@ -291,7 +291,7 @@ int main()
 			}else if(inputStart == "pingmenu")
 			{
 				crlsPing.PingMenu();
-			}else if(inputStart == "showLICENSE")
+			}else if(inputStart == "showlicense")
 			{
 					writeln("Aripa Studio Hub Copyright (C) 2025 Khashayar Mobasheri (AripaStudio)");
 					writeln("This program comes with ABSOLUTELY NO WARRANTY.");
