@@ -301,8 +301,8 @@ int main()
 					
 			}else
 			{
-				consoleUI.printMessage("Please enter: (exit), (viewdns), (changedns), (deletedns), (showmydns), (setting) | Custom DNS section: (showallc), (showdnsinfoc), (adddnsc), (changednsc), (deletednsc)", "\033[31m");
-				consoleUI.printMessage("(pingMenu)" , "showLICENSE" ,"\033[31m" );
+				writeln(GLVclass.tGREEN , "Please enter: (exit), (viewdns), (changedns), (deletedns), (showmydns), (setting) | Custom DNS section: (showallc), (showdnsinfoc), (adddnsc), (changednsc), (deletednsc)",GLVclass.tGREEN);
+				writeln(GLVclass.tGREEN , "(pingMenu)" , "showLICENSE" , GLVclass.tRESET);
 			}
 		}
 		

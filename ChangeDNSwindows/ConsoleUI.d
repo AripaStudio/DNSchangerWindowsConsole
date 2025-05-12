@@ -45,7 +45,7 @@ public class ConsoleUIClass
          writeln(GLVclass.tCYAN, "(DNCaripa = (DN = DNS , C = Changer , aripa = Aripa Studio ))", GLVclass.tRESET);    
         //---------------
 
-        writeln(GLVclass.tCYAN, "V1.5.1 (Aripa Studio) - (DNS Changer)", GLVclass.tRESET);  
+        writeln(GLVclass.tCYAN, "V1.5.2 (Aripa Studio) - (DNS Changer)", GLVclass.tRESET);  
       
         //---------------
         writeln(GLVclass.tGREEN, "Program is running with administrative privileges.", GLVclass.tRESET);  
@@ -106,7 +106,11 @@ public class ConsoleUIClass
       
 		writeln(GLVclass.tYELLOW, "This section allows you to ping DNS servers, check their activity status, and view details., you can type : ", GLVclass.tRESET,
 				GLVclass.tBRIGHT_BLUE , "pingMenu", GLVclass.tRESET);
-        //---------------		
+        
+		//---------------
+        writeln(GLVclass.tYELLOW, "To show LICENSE , you can type:  ", GLVclass.tRESET,
+				GLVclass.tBRIGHT_BLUE , "showLICENSE ", GLVclass.tRESET);
+        //---------------
 
         writeln(GLVclass.tYELLOW, "For exit, you can type this: ", GLVclass.tRESET,
 				GLVclass.tRED , "exit ", GLVclass.tRESET);
