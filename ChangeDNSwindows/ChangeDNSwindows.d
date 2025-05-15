@@ -291,10 +291,18 @@ int main()
 			}else if(inputStart == "pingmenu")
 			{
 				crlsPing.PingMenu();
+			}else if(inputStart == "showlicense")
+			{
+					writeln("Aripa Studio Hub Copyright (C) 2025 Khashayar Mobasheri (AripaStudio)");
+					writeln("This program comes with ABSOLUTELY NO WARRANTY.");
+					writeln("This is free software, and you are welcome to redistribute it under the terms of the GNU General Public License version 3.");
+					writeln("A full copy of the GPLv3 license is available in the file 'LICENSE.txt'");
+					writeln("in the directory where you downloaded this software.");
+					
 			}else
 			{
-				consoleUI.printMessage("Please enter: (exit), (viewdns), (changedns), (deletedns), (showmydns), (setting) | Custom DNS section: (showallc), (showdnsinfoc), (adddnsc), (changednsc), (deletednsc)", "\033[31m");
-				consoleUI.printMessage("(pingMenu)" ,"\033[31m" );
+				writeln(GLVclass.tGREEN , "Please enter: (exit), (viewdns), (changedns), (deletedns), (showmydns), (setting) | Custom DNS section: (showallc), (showdnsinfoc), (adddnsc), (changednsc), (deletednsc)",GLVclass.tGREEN);
+				writeln(GLVclass.tGREEN , "(pingMenu)" , "showLICENSE" , GLVclass.tRESET);
 			}
 		}
 		

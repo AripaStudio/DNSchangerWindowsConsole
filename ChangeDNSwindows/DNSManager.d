@@ -503,7 +503,7 @@ public class DNSManagerClass
 				{
 					string err = text("Error in Run PingDNS " , "(DNS server :) " , OneDNS , "Error : "  , e.msg);					
 					ErrorManager = true;
-					ErrorManagerMessage += [err];
+					ErrorManagerMessage ~= [err];
 				}
  				try
 				{
@@ -513,7 +513,7 @@ public class DNSManagerClass
 				{
 					string err = text("Error in Run PingDNS " , "(DNS server :) " , TwoDNS , "Error : "  , e.msg);					
 					ErrorManager = true;
-					ErrorManagerMessage += [err];
+					ErrorManagerMessage ~= [err];
 				}
 			}else if(Currentdns.length == 1)
 			{
@@ -526,21 +526,21 @@ public class DNSManagerClass
 				{
 					string err = text("Error in Run PingDNS " , "(DNS server :) " , OneDNS , "Error : "  , e.msg);
 					ErrorManager = true;
-					ErrorManagerMessage += [err];
+					ErrorManagerMessage ~= [err];
 
 				}
 			}else
 			{
 				string err = text("DNS not Valid ");
 				ErrorManager = true;
-				ErrorManagerMessage += [err];
+				ErrorManagerMessage ~= [err];
 			}
 			
 		}else
 		{
 			string err = text(GLVclass.tRED , " Error , DNS in empty!" , GLVclass.tRESET);
 			ErrorManager = true;
-			ErrorManagerMessage += [err];
+			ErrorManagerMessage ~= [err];
 		}
 
 		if(ErrorManager)
@@ -560,7 +560,7 @@ public class DNSManagerClass
 		{
 			auto result = executeShellCommand(`powershell -ExecutionPolicy Bypass -Command "Get-DnsClientServerAddress | Select-Object -ExpandProperty ServerAddresses"`);
 
-			var rls = new CRLs();
+			auto rls = new CRLs();
 
 			int exitCode = to!int(result[0]);
 			string output = result[1];

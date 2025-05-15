@@ -204,7 +204,7 @@ public class CRLsPing
     //نوشتن و استفاده از 
     //pingMydns
     // و اپدیت جدید 
-    //1.6.0
+    //1.6.0    
     void PingMyDNS()
 	{
         
