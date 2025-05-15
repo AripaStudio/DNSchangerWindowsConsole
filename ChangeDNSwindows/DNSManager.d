@@ -585,8 +585,11 @@ public class DNSManagerClass
 					if (rls.isValidIPv4(trimmedAddr) && !rls.IsPrivateIP(trimmedAddr))
 					{
 						validDnsServers ~= trimmedAddr;
-					} else if (rls.isValidIPv4(trimmedAddr) && rls.IsPrivateIP(trimmedAddr)) {
+					} else if (rls.isValidIPv4(trimmedAddr) && rls.IsPrivateIP(trimmedAddr))
+					{
+
 						writeln("Private IP Found (Ignored): ", trimmedAddr);
+
 					} else if (!trimmedAddr.canFind(":")) {
 						writeln("Invalid or Non-IPv4 Address Found (Ignored): ", trimmedAddr);
 					}
