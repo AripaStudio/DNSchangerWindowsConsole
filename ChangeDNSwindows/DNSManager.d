@@ -558,14 +558,20 @@ public class DNSManagerClass
 	 {
 		try
 		{
+			
 			auto result = executeShellCommand(`powershell -ExecutionPolicy Bypass -Command "Get-DnsClientServerAddress | Select-Object -ExpandProperty ServerAddresses"`);
 
 			auto rls = new CRLs();
 
+			string[] ReturnStr;
+			
+			
 			int exitCode = to!int(result[0]);
 			string output = result[1];
 			string errorOutput = result[2];
-
+			
+			
+			
 			if (exitCode == 0 && !output.empty)
 			{
 				writeln("DNS Servers:");
@@ -578,11 +584,27 @@ public class DNSManagerClass
 					.filter!(line => !line.canFind(":"))
 					.array;
 
+
 				if (dnsServers.length == 0) {
 					writeln("No valid IPv4 DNS found.");
 					return null;
 				}
 
+				if(rls.IsPrivateIP(dnsServers[0]))
+				{
+					ReturnStr[0] = dnsServers[1];
+					ReturnStr[1] = dnsServers[2];
+
+					//check Is Valid DNS:
+					foreach(d; ReturnStr) {
+						if(!rls.isValidIPv4(d)) {
+							writeln("DNS not Valid: ", d);
+							return null;
+						}
+					}
+
+					return ReturnStr;
+				}
 				//check Is Valid DNS:
 				foreach(d; dnsServers) {
 					if(!rls.isValidIPv4(d)) {
