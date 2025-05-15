@@ -201,17 +201,6 @@ public class CRLsPing
 		
 	}
 
-    //نوشتن و استفاده از 
-    //pingMydns
-    // و اپدیت جدید 
-    //1.6.0    
-    void PingMyDNS()
-	{
-        
-
-        
-	}
-
     void PingDNSCustom()
 	{
         writeln("Please enter your DNS name (the DNS name you saved in your list) to ping.");
@@ -275,12 +264,17 @@ public class CRLsPing
 			}else if(inputUser == "chactivec")
 			{
                 ChActiveANDinformationCustom();
-			}else if(inputUser == "return")
+			}else if(inputUser == "currentdns")
+            {
+                dnsManager.PingMyDNS();
+            }else if(inputUser == "return")
 			{
 			    break;
-			}else
+			}
+            else
 			{
                 writeln(GLVclass.tRED , "plese Enter : (PingDNS) , (PingDNSC) , (ChActive) , (ChActiveC) For return : (return) "  , GLVclass.tRESET);
+                writeln(GLVclass.tRED , "for ping current dns : (currentDNS) " , GLVclass.tRESET);
 			}
 		}
 	}
