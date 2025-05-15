@@ -207,7 +207,9 @@ public class CRLsPing
     //1.6.0
     void PingMyDNS()
 	{
+        
 
+        
 	}
 
     void PingDNSCustom()
