@@ -610,6 +610,8 @@ public class DNSManagerClass
 	 }
 
 
+	 
+
 		
 	 //Check activ DNS
 	 public void ChActivDNS(string DNSname)
