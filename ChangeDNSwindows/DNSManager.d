@@ -556,69 +556,55 @@ public class DNSManagerClass
 
 
 
-	 // Error : show private ip :
 	 string[] CurrentDNS()
 	 {
 		try
 		{
-			
 			auto result = executeShellCommand(`powershell -ExecutionPolicy Bypass -Command "Get-DnsClientServerAddress | Select-Object -ExpandProperty ServerAddresses"`);
 
 			auto rls = new CRLs();
+			string[] validDnsServers;
 
-			string[] ReturnStr;
-			
-			
 			int exitCode = to!int(result[0]);
 			string output = result[1];
 			string errorOutput = result[2];
-			
-			
-			
+
 			if (exitCode == 0 && !output.empty)
 			{
 				writeln("DNS Servers:");
 				writeln(output);
 
-
-				auto dnsServers = output
+				auto allAddresses = output
 					.splitLines
 					.filter!(line => !line.strip.empty)
-					.filter!(line => !line.canFind(":"))
 					.array;
 
+				foreach (addr; allAddresses)
+				{
+					auto trimmedAddr = addr.strip;
+					if (rls.isValidIPv4(trimmedAddr) && !rls.IsPrivateIP(trimmedAddr))
+					{
+						validDnsServers ~= trimmedAddr;
+					} else if (rls.isValidIPv4(trimmedAddr) && rls.IsPrivateIP(trimmedAddr)) {
+						writeln("Private IP Found (Ignored): ", trimmedAddr);
+					} else if (!trimmedAddr.canFind(":")) {
+						writeln("Invalid or Non-IPv4 Address Found (Ignored): ", trimmedAddr);
+					}
+				}
 
-				if (dnsServers.length == 0) {
-					writeln("No valid IPv4 DNS found.");
+				if (validDnsServers.length == 0)
+				{
+					writeln("No valid public IPv4 DNS found.");
 					return null;
 				}
 
-				if(rls.IsPrivateIP(dnsServers[0]))
+				writeln("Valid DNS Servers Found:");
+				foreach (dns; validDnsServers)
 				{
-					ReturnStr[0] = dnsServers[1];
-					ReturnStr[1] = dnsServers[2];
-
-					//check Is Valid DNS:
-					foreach(d; ReturnStr) {
-						if(!rls.isValidIPv4(d)) {
-							writeln("DNS not Valid: ", d);
-							return null;
-						}
-					}
-
-					return ReturnStr;
-				}
-				//check Is Valid DNS:
-				foreach(d; dnsServers) {
-					if(!rls.isValidIPv4(d)) {
-						writeln("DNS not Valid: ", d);
-						return null;
-					}
+					writeln(dns);
 				}
 
-				//return CurrentDNS:
-				return dnsServers;
-
+				return validDnsServers;
 
 			} else
 			{
@@ -627,9 +613,10 @@ public class DNSManagerClass
 				return null;
 			}
 
-		}catch(Exception e)
+		}
+		catch (Exception e)
 		{
-			writeln("Error in Save CurrentDNS? : " , e.msg);
+			writeln("Error in Save CurrentDNS? : ", e.msg);
 			return null;
 		}
 	 }
