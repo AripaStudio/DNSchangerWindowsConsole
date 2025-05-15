@@ -554,6 +554,9 @@ public class DNSManagerClass
 		
 	 }
 
+
+
+	 // Error : show private ip :
 	 string[] CurrentDNS()
 	 {
 		try
