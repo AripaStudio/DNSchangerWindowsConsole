@@ -167,6 +167,16 @@ class CRLs
         return true;
 	}
 
+    bool IsPrivateIP(string ip)
+	{
+		if (ip.startsWith("10.") || 
+			(ip.startsWith("172.") && (to!int(ip.split('.')[1]) >= 16 && to!int(ip.split('.')[1]) <= 31)) ||
+			ip.startsWith("192.168.")) {
+				return true;
+			}
+		return false;
+	}
+
 }
 
 public class CRLsPing

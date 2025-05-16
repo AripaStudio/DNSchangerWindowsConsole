@@ -554,6 +554,8 @@ public class DNSManagerClass
 		
 	 }
 
+
+
 	 string[] CurrentDNS()
 	 {
 		try
@@ -561,6 +563,7 @@ public class DNSManagerClass
 			auto result = executeShellCommand(`powershell -ExecutionPolicy Bypass -Command "Get-DnsClientServerAddress | Select-Object -ExpandProperty ServerAddresses"`);
 
 			auto rls = new CRLs();
+			string[] validDnsServers;
 
 			int exitCode = to!int(result[0]);
 			string output = result[1];
@@ -571,29 +574,40 @@ public class DNSManagerClass
 				writeln("DNS Servers:");
 				writeln(output);
 
-
-				auto dnsServers = output
+				auto allAddresses = output
 					.splitLines
 					.filter!(line => !line.strip.empty)
-					.filter!(line => !line.canFind(":"))
 					.array;
 
-				if (dnsServers.length == 0) {
-					writeln("No valid IPv4 DNS found.");
-					return null;
-				}
+				foreach (addr; allAddresses)
+				{
+					auto trimmedAddr = addr.strip;
+					if (rls.isValidIPv4(trimmedAddr) && !rls.IsPrivateIP(trimmedAddr))
+					{
+						validDnsServers ~= trimmedAddr;
+					} else if (rls.isValidIPv4(trimmedAddr) && rls.IsPrivateIP(trimmedAddr))
+					{
 
-				//check Is Valid DNS:
-				foreach(d; dnsServers) {
-					if(!rls.isValidIPv4(d)) {
-						writeln("DNS not Valid: ", d);
-						return null;
+						writeln("Private IP Found (Ignored): ", trimmedAddr);
+
+					} else if (!trimmedAddr.canFind(":")) {
+						writeln("Invalid or Non-IPv4 Address Found (Ignored): ", trimmedAddr);
 					}
 				}
 
-				//return CurrentDNS:
-				return dnsServers;
+				if (validDnsServers.length == 0)
+				{
+					writeln("No valid public IPv4 DNS found.");
+					return null;
+				}
 
+				writeln("Valid DNS Servers Found:");
+				foreach (dns; validDnsServers)
+				{
+					writeln(dns);
+				}
+
+				return validDnsServers;
 
 			} else
 			{
@@ -602,13 +616,16 @@ public class DNSManagerClass
 				return null;
 			}
 
-		}catch(Exception e)
+		}
+		catch (Exception e)
 		{
-			writeln("Error in Save CurrentDNS? : " , e.msg);
+			writeln("Error in Save CurrentDNS? : ", e.msg);
 			return null;
 		}
 	 }
 
+
+	 
 
 		
 	 //Check activ DNS
