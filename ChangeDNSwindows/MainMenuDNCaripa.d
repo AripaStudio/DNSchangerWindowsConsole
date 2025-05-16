@@ -285,6 +285,8 @@ bool isRunningAsAdmin()
             }else if(UserInput == "linux")
             {
                 
+            }else {
+                writeln("Error in output User : " , UserInput);
             }
 
     }
