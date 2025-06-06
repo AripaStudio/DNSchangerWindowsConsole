@@ -18,6 +18,7 @@ import NetworkInterface;
 import SaveManager;
 import GLV;
 import RLs;
+import linuxV.DNCaripalinuxmain;
 
 class CL_mainMenuDNCaripa
 {
@@ -284,7 +285,8 @@ bool isRunningAsAdmin()
                 }
             }else if(UserInput == "linux")
             {
-                
+                auto dnsLinuxmng = new CL_Linux_DNCaripaMainPage();
+                dnsLinuxmng.MainMenuLinuxSection();
             }else {
                 writeln("Error in output User : " , UserInput);
             }
