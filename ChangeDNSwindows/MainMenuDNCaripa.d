@@ -315,8 +315,3 @@ bool isRunningAsAdmin()
         
     }
 }
-
-class CL_RLS_mainMenu
-{
-    
-}
