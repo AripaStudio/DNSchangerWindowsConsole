@@ -5,10 +5,10 @@ import std.string;
 import std.conv;
 import GLV;
 
-class CL_Linux_MenuManager
+public class CL_Linux_MenuManager
 {
 
-    public void MainMenuLinuxSection()
+    public void MainMenuLinuxSectionManager()
     {
         helpLinuxSection();
         while(true)
@@ -26,15 +26,18 @@ class CL_Linux_MenuManager
             }else if(inputUser == "help")
             {
                helpLinuxSection(); 
+            }else if(inputUser == "exit")
+            {
+               break;
             }else
             {
                 writeln("please enter (changedns)or(cngd) & (showmydns)or(view) & (deletemydns)or(del)");
-                writeln("for help : help");
+                writeln("for help : help and for exit : exit");
             }
         }
     }
 
-    public void helpLinuxSection()
+    public void helpLinuxSectionManager()
     {
         writeln(GLVClass.tGREEN , "welcome to Linux Section" , GLVClass.tRESET);
         writeln("");
@@ -47,6 +50,7 @@ class CL_Linux_MenuManager
         writeln("cngd : for change your dns ");
         writeln("view : for view your current dns ");
         writeln("del : for delte your current dns ");
+        writeln("for Help : help");
 
         
     }
