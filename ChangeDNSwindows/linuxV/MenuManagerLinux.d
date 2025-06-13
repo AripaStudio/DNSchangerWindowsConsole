@@ -51,7 +51,5 @@ public class CL_Linux_MenuManager
         writeln("view : for view your current dns ");
         writeln("del : for delte your current dns ");
         writeln("for Help : help");
-
-        
     }
 }
